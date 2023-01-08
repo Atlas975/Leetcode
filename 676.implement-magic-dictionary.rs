@@ -1,0 +1,39 @@
+/*
+ * @lc app=leetcode id=676 lang=rust
+ *
+ * [676] Implement Magic Dictionary
+ */
+
+// @lc code=start
+struct MagicDictionary {
+
+}
+
+
+/** 
+ * `&self` means the method takes an immutable reference.
+ * If you need a mutable reference, change it to `&mut self` instead.
+ */
+impl MagicDictionary {
+
+    fn new() -> Self {
+        
+    }
+    
+    fn build_dict(&self, dictionary: Vec<String>) {
+        
+    }
+    
+    fn search(&self, search_word: String) -> bool {
+        
+    }
+}
+
+/**
+ * Your MagicDictionary object will be instantiated and called as such:
+ * let obj = MagicDictionary::new();
+ * obj.build_dict(dictionary);
+ * let ret_2: bool = obj.search(searchWord);
+ */
+// @lc code=end
+

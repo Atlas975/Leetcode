@@ -9,14 +9,14 @@
 
 class Solution:
     def lengthOfLongestSubstring(self, s: str) -> int:
-        res = 0
-        j = 0
-        seen = {}
+        seen = [float("inf")] * 128
+        res, l = 0, 0
         for i, c in enumerate(s):
-            if c in seen:
-                j = max(j, seen[c] + 1)
-            seen[c] = i
-            res = max(res, i - j + 1)
+            idx = ord(c)
+            if seen[idx] != float("inf"):
+                l = max(l, seen[idx] + 1)
+            seen[idx] = i
+            res = max(res, i - l + 1)
         return res
 
 

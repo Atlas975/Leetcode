@@ -18,49 +18,56 @@ class Node:
         self.nex = nex
 
 
-class OrdDict:
+class LRUCache:
     def __init__(self):
         self.cache = {}
         self.left, self.right = Node(), Node()
         self.left.nex, self.right.pre = self.right, self.left
 
-    def append(self, node: Node) -> None:
+    def _append(self, node: Node) -> None:
         l, r = self.right.pre, self.right
         node.pre, node.nex = l, r
         l.nex = r.pre = node
         self.cache[node.key] = node
 
-    def pop(self, key: int) -> tuple[int, int]:
+    def _pop(self, key: int) -> Node:
         node = self.cache.pop(key)
         l, r = node.pre, node.nex
         l.nex, r.pre = r, l
-        return (node.key, node.value)
+        return node
 
-    def pop_back(self) -> tuple[int, int]:
-        return self.pop(self.left.nex.key)
+    def popitem(self, key: int) -> tuple[int, int]:
+        delnode = self._pop(key)
+        return delnode.key, delnode.value
 
-    def __setitem__(self, key, value) -> None:
-        self.append(Node(key, value))
+    def popleft(self) -> tuple[int, int]:
+        return self.popitem(self.left.nex.key)
 
-    def __bool__(self):
-        return len(self.cache) > 0
+    def __setitem__(self, key: int, value: int) -> None:
+        if node := self.cache.get(key):
+            node.value = value
+            self._append(self._pop(key))
+            return
+        self._append(Node(key, value))
+
+    def __bool__(self) -> bool:
+        return bool(self.cache)
 
 
 class LFUCache:
     def __init__(self, cap: int):
         self.cap = cap
-        self.f_k_v = defaultdict(OrdDict)
+        self.f_k_v = defaultdict(OrderedDict)
         self.k_f = {}
         self.minf = 1
 
     def get(self, key: int) -> int:
-        if key not in self.k_f:
+        if not (freq := self.k_f.get(key)):
             return -1
 
-        freq = self.k_f[key]
-        self.k_f[key] = freq + 1
-        value = self.f_k_v[freq].pop(key)[1]
+        value = self.f_k_v[freq].pop(key)
         self.f_k_v[freq + 1][key] = value
+        self.k_f[key] = freq + 1
 
         if not self.f_k_v[freq]:
             del self.f_k_v[freq]
@@ -79,9 +86,9 @@ class LFUCache:
         self.f_k_v[1][key] = value
 
         if self.cap < 0:
-            self.cap += 1
-            fifo_k = self.f_k_v[self.minf].pop_back()[0]
+            fifo_k = self.f_k_v[self.minf].popitem(last=False)[0]
             del self.k_f[fifo_k]
+            self.cap += 1
         self.minf = 1
 
 

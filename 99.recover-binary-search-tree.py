@@ -21,7 +21,7 @@ class Solution:
         """
 
         n1, n2 = None, None
-        pre = TreeNode(float('-inf'))
+        pre = TreeNode(float("-inf"))
         s = deque()
 
         while root or s:
@@ -31,15 +31,16 @@ class Solution:
             root = s.pop()
 
             if pre.val > root.val:
-                if not n1:
-                    n1 = pre
                 if n1:
-                    n2 = root
+                    n1.val, root.val = root.val, n1.val
+                    return
+                n1 = pre
+                n2 = root
 
             pre = root
             root = root.right
 
         n1.val, n2.val = n2.val, n1.val
 
-# @lc code=end
 
+# @lc code=end

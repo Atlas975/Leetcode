@@ -7,16 +7,12 @@
 // @lc code=start
 impl Solution {
     pub fn max_profit(prices: Vec<i32>) -> i32 {
-        let profit = prices.iter().enumerate().fold((0, 0), |(profit, min), (i, &price)| {
-            if i == 0 {
-                (0, price)
-            } else {
-                (profit.max(price - min), min.min(price))
-            }
-        });
-        profit.0
-
+        prices
+            .into_iter()
+            .fold((0, i32::MAX), |(profit, cost), price| {
+                (profit.max(price - cost), price.min(cost))
+            })
+            .0
     }
 }
 // @lc code=end
-

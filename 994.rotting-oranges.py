@@ -32,14 +32,18 @@ class Solution:
             qlen = len(q)
             for _ in range(qlen):
                 r, c = q.popleft()
-                fresh -= sum(
-                    (
-                        expand(r + 1, c) if r < n - 1 else 0,
-                        expand(r - 1, c) if r > 0 else 0,
-                        expand(r, c + 1) if c < m - 1 else 0,
-                        expand(r, c - 1) if c > 0 else 0,
-                    )
+                fresh -= (
+                    expand(r + 1, c)
+                    if r < n - 1
+                    else 0 + expand(r - 1, c)
+                    if r > 0
+                    else 0 + expand(r, c + 1)
+                    if c < m - 1
+                    else 0 + expand(r, c - 1)
+                    if c > 0
+                    else 0
                 )
+
             time += 1
         return -1 if fresh else time
 

@@ -10,12 +10,11 @@ import heapq as hq
 
 
 class User:
-    __slots__ = ("userId", "tweets", "follows")
+    __slots__ = ("tweets", "follows")
 
     def __init__(self, userId):
-        self.userId = userId
         self.tweets = deque()
-        self.follows = {self.userId}
+        self.follows = {userId}
 
 
 class Twitter:

@@ -8,9 +8,9 @@
 use std::collections::{HashMap, HashSet, VecDeque, BinaryHeap};
 
 struct User {
-    userId: i32,
-    tweets: VecDeque<(i32, i32)>,
-    follows: HashSet<i32>,
+    pub user_id: i32,
+    pub tweets: VecDeque<(i32, i32)>,
+    pub follows: HashSet<i32>,
 }
 
 struct Twitter {
@@ -19,10 +19,6 @@ struct Twitter {
 }
 
 
-/**
- * `&self` means the method takes an immutable reference.
- * If you need a mutable reference, change it to `&mut self` instead.
- */
 impl Twitter {
 
     fn new() -> Self {
@@ -32,44 +28,50 @@ impl Twitter {
         }
     }
 
-    fn get_user(&mut self, userId: i32) -> &mut User {
-        self.idmap.entry(userId).or_insert(User {
-            userId,
+    fn get_user(&mut self, user_id: i32) -> &mut User {
+        self.idmap.entry(user_id).or_insert(User {
+            user_id,
             tweets: VecDeque::new(),
-            follows: HashSet::new(),
+            follows: HashSet::from([user_id]),
         })
     }
 
     fn post_tweet(&mut self, user_id: i32, tweet_id: i32) {
-        let mut tweets = &mut self.get_user(user_id).tweets;
-        tweets.push_front((self.timestamp, tweet_id));
+        let curtime = self.timestamp;
+        let tweets = &mut self.get_user(user_id).tweets;
+        tweets.push_back((curtime, tweet_id));
         if tweets.len() > 10 {
-            tweets.pop_back();
+            tweets.pop_front();
         }
-        self.timestamp -= 1;
+        self.timestamp += 1;
     }
 
-    fn get_news_feed(&self, user_id: i32) -> Vec<i32> {
+    fn get_news_feed(&mut self, user_id: i32) -> Vec<i32> {
+        let mut mxheap = BinaryHeap::new();
 
-        // let mut mxheap = BinaryHeap::new();
-        // for &followee in &self.get_user(user_id).follows {
-        //     // get tweet at the end of tweet list
-        //     let lstidx = self.get_user(followee).tweets.len() - 1;
-        //     if lstidx >= 0 {
-        //         let lsttweet = self.get_user(followee).tweets[lstidx];
-        //         let (time, tweet) = (lsttweet)
-        //     }
+        let follows = match self.idmap.get(&user_id) {
+            Some(user) => &user.follows,
+            None => return vec![],
+        };
 
-        //     let lsttweet = &self.get_user(followee).tweets;
+        for followee in follows {
+            if let Some(user) = self.idmap.get(followee) {
+                let last = user.tweets.len() - 1;
+                let (time, tweet_id) = user.tweets[last];
+                mxheap.push((time, tweet_id, &user.tweets, last));
+            }
+        }
 
-        // }
-        // for &followee in self.idmap.get(&user_id).unwrap().follows.iter() {
-        //     // check if followee has tweets
-        //     let last
-        // }
-        // // init max heap
-        return vec![];
+        let mut feed = vec![];
+        while !mxheap.is_empty() && feed.len() < 10 {
+            let (_, tweet_id, tweets, idx) = mxheap.pop().unwrap();
+            feed.push(tweet_id);
+            if let Some(&(time, tweet_id)) = tweets.get(idx - 1) {
+                mxheap.push((time, tweet_id, tweets, idx - 1));
+            }
+        }
 
+        feed
     }
 
     fn follow(&mut self, follower_id: i32, followee_id: i32) {
@@ -80,7 +82,6 @@ impl Twitter {
         self.get_user(follower_id).follows.remove(&followee_id);
     }
 }
-
 /**
  * Your Twitter object will be instantiated and called as such:
  * let obj = Twitter::new();

@@ -29,6 +29,7 @@ impl Solution {
         visited.insert((r, c));
         let node = heights[r][c];
         for (dr, dc) in [(0, 1), (0, -1), (1, 0), (-1, 0)].iter() {
+            if 
             let (nr, nc) = (r as i32 + dr, c as i32 + dc);
             if nr >= 0
                 && nr < n as i32

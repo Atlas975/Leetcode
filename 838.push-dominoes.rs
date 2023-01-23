@@ -10,7 +10,6 @@ impl Solution {
         let n = dominoes.len();
         let mut rpush = n;
         let mut res = dominoes.chars().collect::<Vec<char>>();
-        let (mut l, mut r);
 
         for (hi, force) in dominoes.chars().enumerate() {
             if force == 'L' {
@@ -22,8 +21,7 @@ impl Solution {
                         res[i] = 'L';
                     }
                 } else {
-                    l = rpush + 1;
-                    r = hi - 1;
+                    let (mut l, mut r) = (rpush + 1, hi - 1);
                     while l < r {
                         res[l] = 'R';
                         res[r] = 'L';
@@ -34,20 +32,19 @@ impl Solution {
                 }
             } else if force == 'R' {
                 if rpush != n {
-                    (rpush+1..hi).for_each(|j| {
+                    for j in rpush + 1..hi {
                         res[j] = 'R';
-                    });
+                    }
                 }
                 rpush = hi;
             }
         }
 
         if rpush != n {
-            (1+rpush..n).for_each(|j| {
+            for j in 1 + rpush..n {
                 res[j] = 'R';
-            });
+            }
         }
-
         res.into_iter().collect()
     }
 

@@ -5,31 +5,35 @@
  */
 
 // @lc code=start
-use std::collections::HashMap;
 
 impl Solution {
     pub fn is_valid_sudoku(board: Vec<Vec<char>>) -> bool {
-        let mut cols = HashMap::new();
-        let mut rows = HashMap::new();
-        let mut grids = HashMap::new();
-        for i in 0..9 {
-            for j in 0..9 {
-                let c = board[i][j];
-                if c == '.' {
-                    continue;
-                }
-                let grid = (i / 3) * 3 + j / 3;
-                if cols.contains_key(&(j, c))|| rows.contains_key(&(i, c)) || grids.contains_key(&(grid, c)) {
+        let (mut cols, mut rows, mut grids) = (0u128, 0u128, 0u128);
+        board
+            .into_iter()
+            .enumerate()
+            .flat_map(|(r, row)| {
+                row.into_iter()
+                    .enumerate()
+                    .filter(|(_, c)| *c != '.')
+                    .map(move |(c, cell)| {
+                        let offset = (cell as u8 - b'1') as usize;
+                        (
+                            1 << (c * 9 + offset),
+                            1 << (r * 9 + offset),
+                            1 << (((r / 3) * 3 + c / 3) * 9 + offset),
+                        )
+                    })
+            })
+            .all(|(rbit, cbit, gbit)| {
+                if (cols & cbit) | (rows & rbit) | (grids & gbit) != 0 {
                     return false;
                 }
-                cols.insert((j, c), true);
-                rows.insert((i, c), true);
-                grids.insert((grid, c), true);
-            }
-        }
-        return true;
-
+                cols |= cbit;
+                rows |= rbit;
+                grids |= gbit;
+                true
+            })
     }
 }
 // @lc code=end
-

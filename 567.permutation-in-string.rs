@@ -23,7 +23,12 @@ impl Solution {
             acc[get_idx(c)] += 1;
             acc
         });
-        let mut matches = (0..26).filter(|&i| cnt1[i] == cnt2[i]).count();
+
+        let mut matches = cnt1
+            .iter()
+            .zip(cnt2.iter())
+            .filter(|(&a, &b)| a == b)
+            .count();
 
         for i in n1..n2 {
             if matches == 26 {
@@ -49,7 +54,5 @@ impl Solution {
 
         matches == 26
     }
-
 }
 // @lc code=end
-

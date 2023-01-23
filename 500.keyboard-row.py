@@ -15,7 +15,6 @@ class Solution:
             if any(w.issubset(row) for row in rows):
                 res.append(word)
         return res
-    for 
 
 # @lc code=end
 

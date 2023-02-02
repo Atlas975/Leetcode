@@ -21,30 +21,25 @@ class Solution:
             elif grid[r][c] == 2:
                 q.append((r, c))
 
-        def expand(r, c):
-            if grid[r][c] == 1:
-                grid[r][c] = 2
-                q.append((r, c))
-                return 1
-            return 0
+        def expand(valid, r, c):
+            if not valid or grid[r][c] != 1:
+                return 0
+            grid[r][c] = 2
+            q.append((r, c))
+            return 1
 
         while fresh and q:
             qlen = len(q)
             for _ in range(qlen):
                 r, c = q.popleft()
                 fresh -= (
-                    expand(r + 1, c)
-                    if r < n - 1
-                    else 0 + expand(r - 1, c)
-                    if r > 0
-                    else 0 + expand(r, c + 1)
-                    if c < m - 1
-                    else 0 + expand(r, c - 1)
-                    if c > 0
-                    else 0
+                    expand(r < n - 1, r + 1, c)
+                    + expand(r > 0, r - 1, c)
+                    + expand(c < m - 1, r, c + 1)
+                    + expand(c > 0, r, c - 1)
                 )
-
             time += 1
+            
         return -1 if fresh else time
 
 

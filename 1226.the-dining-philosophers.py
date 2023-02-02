@@ -23,8 +23,6 @@ class DiningPhilosophers:
         putRightFork: "Callable[[], None]",
     ) -> None:
 
-
-
         f1, f2 = (1, 0) if philosopher == 0 else (philosopher, (philosopher + 1) % 5)
 
         with (self.locks[f1], self.locks[f2]):
@@ -33,7 +31,6 @@ class DiningPhilosophers:
             eat()
             putLeftFork()
             putRightFork()
-
 
 
 # @lc code=end

@@ -7,14 +7,14 @@
 # @lc code=start
 class Solution:
     def findWords(self, words: List[str]) -> List[str]:
-        rows=(set('qwertyuiop'),set('asdfghjkl'),set('zxcvbnm'))
+        rows = (set("qwertyuiop"), set("asdfghjkl"), set("zxcvbnm"))
 
-        res=[]
+        res = []
         for word in words:
-            w=set(word.lower())
+            w = set(word.lower())
             if any(w.issubset(row) for row in rows):
                 res.append(word)
         return res
 
-# @lc code=end
 
+# @lc code=end

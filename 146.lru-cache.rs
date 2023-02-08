@@ -5,19 +5,22 @@
  */
 
 // @lc code=start
-use std::cell::RefCell;
+use std::cell::{Ref, RefCell};
 use std::collections::HashMap;
 use std::rc::{Rc, Weak};
-
 type StrongNode = Rc<RefCell<Node>>;
 type WeakNode = Weak<RefCell<Node>>;
-macro_rules! option_down {
-    ($x:expr) => {
-        Some(Rc::downgrade(&$x))
+macro_rules! weak_link {
+    ($node:expr) => {
+        Some(Rc::downgrade($node))
+    };
+}
+macro_rules! upgrade_ref {
+    ($node:expr) => {
+        $node.clone().unwrap().upgrade().unwrap()
     };
 }
 
-#[derive(Debug)]
 struct Node {
     key: i32,
     value: i32,
@@ -26,11 +29,7 @@ struct Node {
 }
 
 impl Node {
-    fn new(key: i32, value: i32) -> WeakNode {
-        Rc::downgrade(&Self::new_strong(key, value))
-    }
-
-    fn new_strong(key: i32, value: i32) -> StrongNode {
+    fn new(key: i32, value: i32) -> StrongNode {
         Rc::new(RefCell::new(Node {
             key,
             value,
@@ -38,17 +37,8 @@ impl Node {
             next: None,
         }))
     }
-
-    fn update_value(&mut self, value: i32) {
-        self.value = value;
-    }
-
-    fn get_key(&self) -> i32 {
-        self.key
-    }
 }
 
-#[derive(Debug)]
 struct LRUCache {
     capacity: usize,
     cache: HashMap<i32, StrongNode>,
@@ -58,9 +48,9 @@ struct LRUCache {
 
 impl LRUCache {
     fn new(capacity: i32) -> Self {
-        let (head, tail) = (Node::new_strong(0, 0), Node::new_strong(0, 0));
-        head.borrow_mut().next = option_down!(&tail);
-        tail.borrow_mut().prev = option_down!(&head);
+        let (head, tail) = (Node::new(0, 0), Node::new(0, 0));
+        head.borrow_mut().next = weak_link!(&tail);
+        tail.borrow_mut().prev = weak_link!(&head);
 
         LRUCache {
             capacity: capacity as usize,
@@ -70,76 +60,54 @@ impl LRUCache {
         }
     }
 
-    fn append(&mut self, node: StrongNode) {
-        let (nodelink, nodemut) = (option_down!(&node), node.borrow_mut());
-        let prenode = self.tail.borrow().prev.clone();
-        nodemut.prev = prenode.clone();
-        nodemut.next = option_down!(&self.head);
+    fn append(&self, node: StrongNode) {
+        let (mut right, mut node_mut) = (self.tail.borrow_mut(), node.borrow_mut());
+        let left = upgrade_ref!(right.prev);
 
-        if let Some(prenode) = prenode.and_then(|x| x.upgrade()) {
-            self.head.borrow_mut().prev = nodelink;
-            prenode.borrow_mut().next = nodelink;
-        }
-
-        self.cache.insert(nodemut.key, node);
+        node_mut.prev = weak_link!(&left);
+        node_mut.next = weak_link!(&self.tail);
+        left.borrow_mut().next = weak_link!(&node);
+        right.prev = weak_link!(&node);
     }
 
-    fn pop(&mut self, key: i32) -> Option<StrongNode> {
-        let remnode = match self.cache.get_mut(&key) {
-            Some(remnode) => remnode.clone(),
-            _ => return None,
+    fn pop(&self, node: Ref<Node>) {
+        upgrade_ref!(node.prev).borrow_mut().next = node.next.clone();
+        upgrade_ref!(node.next).borrow_mut().prev = node.prev.clone();
+    }
+
+    fn lru_hit(&mut self, key: &i32) -> Option<StrongNode> {
+        let node = match self.cache.get(key) {
+            Some(node) => node.clone(),
+            None => return None,
         };
-
-        let (left, right) = (remnode.borrow().prev.clone(), remnode.borrow().next.clone());
-
-        if let Some(left) = left.and_then(|x| x.upgrade()) {
-            left.borrow_mut().next = right.clone();
-        }
-
-        if let Some(right) = right.and_then(|x| x.upgrade()) {
-            right.borrow_mut().prev = left.clone();
-        }
-
-        self.cache.remove(&key);
-        Some(remnode)
+        self.pop(node.borrow());
+        self.append(node.clone());
+        Some(node)
     }
 
     fn get(&mut self, key: i32) -> i32 {
-        if let Some(node) = self.cache.get(&key) {
-            if let Some(node) = self.pop(key) {
-                self.append(node);
-                return node.borrow().value;
-            } else {
-                return -1;
-            }
+        match self.lru_hit(&key) {
+            Some(node) => node.borrow().value,
+            None => -1,
         }
-        -1
     }
 
     fn put(&mut self, key: i32, value: i32) {
-        if let Some(node) = self.cache.get(&key) {
-            node.borrow_mut().update_value(value);
-            self.pop(key);
-            self.append(node.clone());
+        if let Some(node) = self.lru_hit(&key) {
+            node.borrow_mut().value = value;
             return;
         }
 
-        let node = Node::new_strong(key, value);
+        if self.cache.len() == self.capacity {
+            let lru = upgrade_ref!(self.head.borrow().next);
+            self.pop(lru.borrow());
+            self.cache.remove(&lru.borrow().key);
+        }
+
+        let node = Node::new(key, value);
         self.append(node.clone());
         self.cache.insert(key, node);
     }
-    // fn put(&mut self, key: i32, value: i32) {
-    //     if let Some(node) = self.cache.get(&key) {
-    //         node.borrow_mut().update_value(value);
-    //         self.pop(key);
-    //         self.append(node.clone());
-    //         return;
-    //     }
-
-    //     let node = Node::new(key, value);
-    //     self.append(node.clone());
-    //     self.cache.insert(key, node);
-    // }
 }
 
 

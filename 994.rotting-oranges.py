@@ -39,7 +39,7 @@ class Solution:
                     + expand(c > 0, r, c - 1)
                 )
             time += 1
-            
+
         return -1 if fresh else time
 
 

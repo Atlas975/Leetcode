@@ -13,9 +13,7 @@ class Solution:
         if len(points) <= 2:
             return len(points)
 
-        slope_calc = lambda p1, p2: (
-            (p1[1] - p2[1]) / (p1[0] - p2[0]) if (p1[0] - p2[0]) != 0 else float("inf")
-        )
+        slope_calc = lambda p1, p2: ((p1[1] - p2[1]) / (p1[0] - p2[0]) if (p1[0] - p2[0]) != 0 else float("inf"))
 
         res = 1
         slopes = defaultdict(lambda: 1)

@@ -75,11 +75,7 @@ class Solution:
             board[r][c] = "#"
 
             for nr, nc in ((r - 1, c), (r + 1, c), (r, c - 1), (r, c + 1)):
-                if (
-                    0 <= nr < n
-                    and 0 <= nc < m
-                    and (nex := node.children.get(board[nr][nc]))
-                ):
+                if 0 <= nr < n and 0 <= nc < m and (nex := node.children.get(board[nr][nc])):
                     bfs(word + board[nr][nc], nex, nr, nc)
 
             board[r][c] = word[-1]

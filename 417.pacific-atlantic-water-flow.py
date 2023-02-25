@@ -15,12 +15,7 @@ class Solution:
             visited.add((r, c))
             node = heights[r][c]
             for dr, dc in ((r - 1, c), (r + 1, c), (r, c - 1), (r, c + 1)):
-                if (
-                    0 <= dr < n
-                    and 0 <= dc < m
-                    and (dr, dc) not in visited
-                    and heights[dr][dc] >= node
-                ):
+                if 0 <= dr < n and 0 <= dc < m and (dr, dc) not in visited and heights[dr][dc] >= node:
                     bfs(dr, dc, visited)
 
         for r in range(n):

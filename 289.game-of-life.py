@@ -40,9 +40,7 @@ class Solution:
 
         for r, c in product(range(n), range(m)):
             count = count_neighbours(r, c)
-            if (board[r][c] == 1 and count in {2, 3}) or (
-                board[r][c] == 0 and count == 3
-            ):
+            if (board[r][c] == 1 and count in {2, 3}) or (board[r][c] == 0 and count == 3):
                 board[r][c] |= 2
 
         for r, c in product(range(n), range(m)):

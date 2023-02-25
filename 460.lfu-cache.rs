@@ -31,7 +31,7 @@ struct Node {
 
 impl Node {
     fn new(key: i32, value: i32) -> StrongNode {
-        Rc::new(RefCell::new(Node {
+        Rc::new(RefCell::new(Self {
             key,
             value,
             prev: None,
@@ -52,7 +52,7 @@ impl OrderedDict {
         head.borrow_mut().next = weak_link!(&tail);
         tail.borrow_mut().prev = weak_link!(&head);
 
-        OrderedDict {
+        Self {
             cache: HashMap::new(),
             head,
             tail,
@@ -74,7 +74,7 @@ impl OrderedDict {
         let node = self.cache.remove(&key).unwrap();
         let node = node.borrow();
         upgrade_ref!(node.prev).borrow_mut().next = node.next.clone();
-        upgrade_ref!(node.next).borrow_mut().prev = node.prev.clone();
+        upgrade_ref!(node.next).borrow_mut().prev = node.prev.clone(); 
         node.value
     }
 
@@ -111,7 +111,7 @@ struct LFUCache {
 
 impl LFUCache {
     fn new(capacity: i32) -> Self {
-        LFUCache {
+        Self {
             capacity: capacity as usize,
             f_k_v: HashMap::new(),
             k_f: HashMap::new(),

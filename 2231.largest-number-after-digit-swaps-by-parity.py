@@ -20,10 +20,7 @@ class Solution:
                 heapq.heappush(odd_heap, -int(c))
 
         res = "".join(
-            str(-heapq.heappop(even_heap))
-            if ord(c) % 2 == 0
-            else str(-heapq.heappop(odd_heap))
-            for c in str_num
+            str(-heapq.heappop(even_heap)) if ord(c) % 2 == 0 else str(-heapq.heappop(odd_heap)) for c in str_num
         )
 
         return int(res)

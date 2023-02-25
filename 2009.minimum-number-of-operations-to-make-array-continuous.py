@@ -16,9 +16,7 @@ class Solution:
 
         ans = n
         for i, start in enumerate(nums):
-            end = (
-                start + n - 1
-            )  # We expect elements of continuous array must in range [start..end]
+            end = start + n - 1  # We expect elements of continuous array must in range [start..end]
             idx = bisect_right(nums, end)  # Find right insert position
             uniqueLen = idx - i
             ans = min(ans, n - uniqueLen)

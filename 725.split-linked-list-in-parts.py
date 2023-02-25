@@ -11,9 +11,7 @@
 #         self.val = val
 #         self.next = next
 class Solution:
-    def splitListToParts(
-        self, head: Optional[ListNode], k: int
-    ) -> List[Optional[ListNode]]:
+    def splitListToParts(self, head: Optional[ListNode], k: int) -> List[Optional[ListNode]]:
         tmp = head
         n = 0
         while tmp:

@@ -11,12 +11,7 @@ class Solution:
             n = len(mat)
             for i in range(n // 2):
                 for j in range(i, n - i - 1):
-                    (
-                        mat[i][j],
-                        mat[j][n - i - 1],
-                        mat[n - i - 1][n - j - 1],
-                        mat[n - j - 1][i],
-                    ) = (
+                    (mat[i][j], mat[j][n - i - 1], mat[n - i - 1][n - j - 1], mat[n - j - 1][i],) = (
                         mat[n - j - 1][i],
                         mat[i][j],
                         mat[j][n - i - 1],

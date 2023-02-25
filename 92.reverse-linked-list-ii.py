@@ -13,9 +13,7 @@ class ListNode:
 
 
 class Solution:
-    def reverseBetween(
-        self, head: Optional[ListNode], left: int, right: int
-    ) -> Optional[ListNode]:
+    def reverseBetween(self, head: Optional[ListNode], left: int, right: int) -> Optional[ListNode]:
 
         if not head or not head.next:
             return head

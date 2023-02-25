@@ -6,9 +6,7 @@
 
 # @lc code=start
 class Solution:
-    def intervalIntersection(
-        self, firstList: List[List[int]], secondList: List[List[int]]
-    ) -> List[List[int]]:
+    def intervalIntersection(self, firstList: List[List[int]], secondList: List[List[int]]) -> List[List[int]]:
         if not firstList or not secondList:
             return []
 

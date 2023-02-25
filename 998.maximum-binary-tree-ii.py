@@ -14,9 +14,7 @@ class TreeNode:
 
 
 class Solution:
-    def insertIntoMaxTree(
-        self, root: Optional[TreeNode], val: int
-    ) -> Optional[TreeNode]:
+    def insertIntoMaxTree(self, root: Optional[TreeNode], val: int) -> Optional[TreeNode]:
         if root and root.val > val:
             return TreeNode(val, root, None)
         if root.right and val > root.right.val:

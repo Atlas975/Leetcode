@@ -17,10 +17,7 @@ class Solution:
         card_count = {item: deck.count(item) for item in deck}
         mingcd = min(card_count.values())
         maxgcd = max(card_count.values())
-        return all(
-            gcd(num_card, mingcd) != 1 and gcd(num_card, maxgcd) != 1
-            for num_card in card_count.values()
-        )
+        return all(gcd(num_card, mingcd) != 1 and gcd(num_card, maxgcd) != 1 for num_card in card_count.values())
 
         # return all(n%value==0 for value in card_count.values()) if n%types==0 else False
 

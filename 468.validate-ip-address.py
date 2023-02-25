@@ -15,9 +15,7 @@ class Solution:
                 return "Neither"
             for substr in xi:
                 try:
-                    if (len(substr) > 1 and substr[0] == "0") or (
-                        int(substr) not in range(256)
-                    ):
+                    if (len(substr) > 1 and substr[0] == "0") or (int(substr) not in range(256)):
                         return "Neither"
                 except ValueError:
                     return "Neither"

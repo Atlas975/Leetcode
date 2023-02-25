@@ -15,18 +15,12 @@ class Solution:
     def tree2str(self, root: Optional[TreeNode]) -> str:
 
         if root.left and root.right:
-            return (
-                f"{root.val}({self.tree2str(root.left)})({self.tree2str(root.right)})"
-            )
+            return f"{root.val}({self.tree2str(root.left)})({self.tree2str(root.right)})"
 
         if root.left:
             return f"{root.val}({self.tree2str(root.left)})"
 
-        return (
-            f"{root.val}()({self.tree2str(root.right)})"
-            if root.right
-            else str(root.val)
-        )
+        return f"{root.val}()({self.tree2str(root.right)})" if root.right else str(root.val)
 
 
 # @lc code=end

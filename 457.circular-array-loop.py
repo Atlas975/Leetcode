@@ -16,11 +16,7 @@ class Solution:
             if any(k == v for k, v in inc.items()):
                 return True
 
-            inc = {
-                k: moveto[v]
-                for k, v in inc.items()
-                if (nums[k] * nums[v] > 0) and (v in inc)
-            }
+            inc = {k: moveto[v] for k, v in inc.items() if (nums[k] * nums[v] > 0) and (v in inc)}
 
         return False
 

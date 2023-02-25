@@ -13,13 +13,7 @@ class Bank:
         self.balance = balance
 
     def transfer(self, account1: int, account2: int, money: int) -> bool:
-        if (
-            account1 > self.n
-            or account2 > self.n
-            or account1 < 1
-            or account2 < 1
-            or self.balance[account1 - 1] < money
-        ):
+        if account1 > self.n or account2 > self.n or account1 < 1 or account2 < 1 or self.balance[account1 - 1] < money:
             return False
 
         self.balance[account1 - 1] -= money

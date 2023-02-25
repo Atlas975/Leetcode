@@ -5,58 +5,61 @@
 #
 
 # @lc code=start
+
+
 from collections import defaultdict
-from dataclasses import dataclass, field
-
-
-@dataclass(slots=True)
-class Trie:
-    children: dict = field(default_factory=lambda: defaultdict(Trie))
-    refs: int = 0
-    end: bool = False
-
-    def insert(self, word: str) -> None:
-        curr = self
-        curr.refs += 1
-        for c in word:
-            if c not in curr.children:
-                curr.children[c]
-            curr = curr.children[c]
-            curr.refs += 1
-        curr.end = True
-
-    def remove(self, word: str) -> None:
-        curr = self
-        curr.refs -= 1
-        for c in word:
-            if c not in curr.children:
-                return
-            curr = curr.children[c]
-            curr.refs -= 1
-        curr.end = False
-
-    def search(self, word: str) -> bool:
-        curr = self
-        for c in word:
-            if c not in curr.children:
-                return False
-            curr = curr.children[c]
-        return curr.end
-
-    def startsWith(self, prefix: str) -> bool:
-        curr = self
-        for c in prefix:
-            if c not in curr.children:
-                return False
-            curr = curr.children[c]
-        return True
+import heapq as hq
 
 
 class Solution:
     def networkDelayTime(self, times: List[List[int]], n: int, k: int) -> int:
-        trie = Trie()
-        for t in times:
-            trie.insert(t)
+        # graph = defaultdict(list)
+        # for u, v, w in times:
+        #     graph[u].append((v, w))
+
+        # dist = {i: float("inf") for i in range(1, n + 1)}
+        # dist[k] = 0
+        # seen = [False] * (n + 1)
+
+        # def dfs(node, elapsed):
+        #     if seen[node]:
+        #         return
+        #     seen[node], dist[node] = True, min(dist[node], elapsed)
+        #     for nei, d in graph[node]:
+        #         dfs(nei, elapsed + d)
+
+        # dfs(k, 0)
+        # res = max(dist.values())
+        # return res if res < float("inf") else -1
+
+        # while True:
+        #     cand_node = -1
+        #     cand_dist = float("inf")
+        #     for i in range(1, n + 1):
+        #         if not seen[i] and dist[i] < cand_dist:
+        #             cand_dist = dist[i]
+        #             cand_node = i
+
+        #     if cand_node < 0:
+        #         break
+        #     seen[cand_node] = True
+        #     for nei, d in graph[cand_node]:
+        #         dist[nei] = min(dist[nei], dist[cand_node] + d)
+        # res = max(dist.values())
+        # return res if res < float("inf") else -1
+
+        graph = defaultdict(list)
+        for u, v, w in times:
+            graph[u].append((v, w))
+        # seen = [False] * (n + 1)
+        dist = {}
+        q = [(0, k)]
+
+        while q:
+            d, node = hq.heappop(q)
+            if node in dist:
+                continue
+            seen[node] = True
 
 
 # @lc code=end

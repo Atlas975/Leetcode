@@ -22,18 +22,12 @@ class Solution:
             valid = any(
                 bfs(r + dr, c + dc, idx + 1)
                 for dr, dc in ((-1, 0), (1, 0), (0, -1), (0, 1))
-                if n > r + dr >= 0
-                and m > c + dc >= 0
-                and board[r + dr][c + dc] == word[idx + 1]
+                if n > r + dr >= 0 and m > c + dc >= 0 and board[r + dr][c + dc] == word[idx + 1]
             )
             board[r][c] = word[idx]
             return valid
 
-        return any(
-            bfs(r, c, 0)
-            for r, c in product(range(n), range(m))
-            if board[r][c] == word[0]
-        )
+        return any(bfs(r, c, 0) for r, c in product(range(n), range(m)) if board[r][c] == word[0])
 
 
 # @lc code=end

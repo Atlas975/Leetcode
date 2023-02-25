@@ -18,10 +18,7 @@ class Solution:
                 return sum(piles[l:]) if turn else 0
 
             return (
-                max(
-                    sum(piles[l : l + x]) + dfs(l + x, max(m, x), 0)
-                    for x in range(1, 2 * m + 1)
-                )
+                max(sum(piles[l : l + x]) + dfs(l + x, max(m, x), 0) for x in range(1, 2 * m + 1))
                 if turn
                 else min(dfs(l + x, max(m, x), 1) for x in range(1, 2 * m + 1))
             )

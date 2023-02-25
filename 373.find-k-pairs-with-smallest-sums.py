@@ -9,9 +9,7 @@ import heapq as hq
 
 
 class Solution:
-    def kSmallestPairs(
-        self, nums1: List[int], nums2: List[int], k: int
-    ) -> List[List[int]]:
+    def kSmallestPairs(self, nums1: List[int], nums2: List[int], k: int) -> List[List[int]]:
 
         hq.heapify(nums1)
         hq.heapify(nums2)

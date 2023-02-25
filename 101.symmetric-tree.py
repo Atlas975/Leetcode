@@ -20,9 +20,7 @@ class Solution:
             return left == right
         if left.val != right.val:
             return False
-        return self.check_symmetry(left.left, right.right) and self.check_symmetry(
-            left.right, right.left
-        )
+        return self.check_symmetry(left.left, right.right) and self.check_symmetry(left.right, right.left)
 
 
 # @lc code=end

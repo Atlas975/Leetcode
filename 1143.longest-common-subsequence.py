@@ -17,9 +17,7 @@ class Solution:
 
         for i, j in product(range(n1), range(n2)):
             a, b = text1[i], text2[j]
-            dp[i + 1][j + 1] = (
-                dp[i][j] + 1 if a == b else max(dp[i][j + 1], dp[i + 1][j])
-            )
+            dp[i + 1][j + 1] = dp[i][j] + 1 if a == b else max(dp[i][j + 1], dp[i + 1][j])
         return dp[-1][-1]
 
         # RECURSIVE

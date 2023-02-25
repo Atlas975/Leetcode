@@ -5,18 +5,17 @@
 #
 
 # @lc code=start
+from itertools import product
+
+
 class Solution:
     def uniquePaths(self, m: int, n: int) -> int:
-        dp = [[0] * n for _ in range(m)]
-        dp[0][0] = 1
+        dp = [[1] * n for _ in range(m)]
 
-        def dfs(i, j):
-            if i < 0 or i >= m or j < 0 or j >= n:
-                return 0
-            if dp[i][j] > 0:
-                return dp[i][j]
-            dp[i][j] = dfs(i - 1, j) + dfs(i, j - 1)
-            return dp[i][j]
+        for x,y in product(range(1, m), range(1, n)):
+            dp[x][y] = dp[x - 1][y] + dp[x][y - 1]
+
+        return dp[-1][-1]
 
 
 # @lc code=end

@@ -24,10 +24,7 @@ class Solution:
             dxmin, dxmax = max(0, x - 1), min(n, x + 2)
             dymin, dymax = max(0, y - 1), min(m, y + 2)
 
-            mines = sum(
-                board[dx][dy] == "M"
-                for dx, dy in product(range(dxmin, dxmax), range(dymin, dymax))
-            )
+            mines = sum(board[dx][dy] == "M" for dx, dy in product(range(dxmin, dxmax), range(dymin, dymax)))
 
             if mines > 0:
                 board[x][y] = str(mines)
@@ -35,9 +32,7 @@ class Solution:
 
             board[x][y] = "B"
             stack.extend(
-                (dx, dy)
-                for dx, dy in product(range(dxmin, dxmax), range(dymin, dymax))
-                if board[dx][dy] == "E"
+                (dx, dy) for dx, dy in product(range(dxmin, dxmax), range(dymin, dymax)) if board[dx][dy] == "E"
             )
 
         return board

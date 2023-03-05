@@ -5,39 +5,34 @@
  */
 
 // @lc code=start
-
-use std::collections::HashSet;
-
 impl Solution {
     pub fn total_n_queens(n: i32) -> i32 {
-        let mut cols = HashSet::new();
-        let mut pdiag = HashSet::new();
-        let mut ndiag = HashSet::new();
-
-        #[inline]
-        fn dfs(r: i32) -> i32 {
-            let mut res = 0;
+        fn dfs(r: usize, n: usize, cols: u16, pdiag: u16, ndiag: u16) -> i32 {
+            let mut comb = 0;
             for c in 0..n {
-                if cols.contains(&c) || pdiag.contains(&(r + c)) || ndiag.contains(&(r - c)) {
+                if (cols & (1 << c)) != 0
+                    || (pdiag & (1 << (r + c))) != 0
+                    || (ndiag & (1 << (r - c + n))) != 0
+                {
                     continue;
                 }
-
-                if (r + 1 == n) {
+                if r == n - 1 {
                     return 1;
                 }
 
-                cols.insert(c);
-                pdiag.insert(r + c);
-                ndiag.insert(r - c);
-                res += dfs(r + 1);
-                cols.remove(&c);
-                pdiag.remove(&(r + c));
-                ndiag.remove(&(r - c));
+                comb += dfs(
+                    r + 1,
+                    n,
+                    cols | (1 << c),
+                    pdiag | (1 << (r + c)),
+                    ndiag | (1 << (r - c + n)),
+                );
             }
-            return res;
+            comb
         }
 
-        dfs(0)
+        dfs(0, n as usize, 0, 0, 0)
     }
 }
 // @lc code=end
+

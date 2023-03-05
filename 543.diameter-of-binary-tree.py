@@ -32,21 +32,6 @@ class Solution:
         #         dpth = max(dpth, l_h + r_h)
 
         mxdpth = 0
-        # diam = defaultdict(int, {None: 0})
-        # s = deque()
-        # while root or s:
-        #     while root:
-        #         s.append((root, False))
-        #         root = root.left
-        #     root, seen = s.pop()
-        #     if seen:
-        #         l_h, r_h = diam[root.left], diam[root.right]
-        #         diam[root] = 1 + max(l_h, r_h)
-
-        #         root = None
-        #     else:
-        #         s.append((root, True))
-        #         root = root.right
 
         def dfs(node):
             nonlocal mxdpth

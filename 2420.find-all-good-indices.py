@@ -8,13 +8,13 @@
 class Solution:
     def goodIndices(self, nums: List[int], k: int) -> List[int]:
         res = []
-        for i in range(k, len(nums)-k):
-            left, right = i-k, i+1
-            while right < len(nums) and nums[right] >= nums[right-1]:
+        for i in range(k, len(nums) - k):
+            left, right = i - k, i + 1
+            while right < len(nums) and nums[right] >= nums[right - 1]:
                 right += 1
-            while left >= 0 and nums[left] <= nums[left+1]:
+            while left >= 0 and nums[left] <= nums[left + 1]:
                 left -= 1
-            if right - left - 1 >= 2*k:
+            if right - left - 1 >= 2 * k:
                 res.append(i)
         return res
 

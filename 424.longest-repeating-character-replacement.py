@@ -10,18 +10,17 @@ from collections import defaultdict
 
 class Solution:
     def characterReplacement(self, s: str, k: int) -> int:
-
-        freq = defaultdict(int)
-        longest, maxf, l = 0, 0, 0
+        freq = [0] * 128
+        res, mxfrq, l = 0, 0, 0
 
         for r, c in enumerate(s):
-            freq[c] += 1
-            maxf = max(maxf, freq[c])
-            if r - l + 1 - maxf > k:
-                freq[s[l]] -= 1
+            freq[int(c)] += 1
+            mxfrq = max(mxfrq, freq[int(c)])
+            if r - l + 1 - mxfrq > k:
+                freq[int(c)] -= 1
                 l += 1
-            longest = max(longest, r - l + 1)
-        return longest
+            res = max(res, r - l + 1)
+        return res
 
 
 # @lc code=end

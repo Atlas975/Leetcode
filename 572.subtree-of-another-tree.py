@@ -20,25 +20,11 @@ class TreeNode:
 
 class Solution:
     def isSubtree(self, root: Optional[TreeNode], subRoot: Optional[TreeNode]) -> bool:
-        def check(root1, root2):
-            if bool(root1) ^ bool(root2):
-                return False
-            if root1:
-                if root1.val != root2.val:
-                    return False
-                lcheck = check(root1.left, root2.left)
-                rcheck = check(root1.right, root2.right)
-                return lcheck and rcheck
-            return True
+        def preord(node):
+            return f"({node.val}{preord(node.left)}{preord(node.right)})" if node else "#"
 
-        def is_subtree(root, subRoot):
-            if check(root, subRoot):
-                return True
-            if root.left and is_subtree(root.left, subRoot):
-                return True
-            return bool(root.right and is_subtree(root.right, subRoot))
-
-        return is_subtree(root, subRoot)
+        p, q = preord(root), preord(subRoot)
+        return q in p
 
 
 # @lc code=end

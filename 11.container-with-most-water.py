@@ -7,17 +7,17 @@
 # @lc code=start
 class Solution:
     def maxArea(self, height: List[int]) -> int:
-        mxarea = 0
+        mxar = 0
         l, r = 0, len(height) - 1
 
         while l < r:
             if height[l] < height[r]:
-                mxarea = max(mxarea, height[l] * (r - l))
+                mxar = max(mxar, height[l] * (r - l))
                 l += 1
             else:
-                mxarea = max(mxarea, height[r] * (r - l))
+                mxar = max(mxar, height[r] * (r - l))
                 r -= 1
-        return mxarea
+        return mxar
 
 
 # @lc code=end

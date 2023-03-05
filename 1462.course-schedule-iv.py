@@ -7,7 +7,10 @@
 # @lc code=start
 class Solution:
     def checkIfPrerequisite(
-        self, numCourses: int, prerequisites: List[List[int]], queries: List[List[int]]
+        self,
+        numCourses: int,
+        prerequisites: List[List[int]],
+        queries: List[List[int]],
     ) -> List[bool]:
         req = {preq[1]: preq[0] for preq in prerequisites}
         res = []

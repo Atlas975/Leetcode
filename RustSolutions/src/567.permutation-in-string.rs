@@ -12,17 +12,13 @@ impl Solution {
             return false;
         }
 
-        let get_idx = |c: u8| (c - b'a') as usize;
-        let cnt1 = s1.bytes().fold([0u8; 26], |mut acc, c| {
-            acc[get_idx(c)] += 1;
-            acc
-        });
-
-        let s2bytes = s2.as_bytes();
-        let mut cnt2 = s2bytes[0..n1].iter().fold([0u8; 26], |mut acc, &c| {
-            acc[get_idx(c)] += 1;
-            acc
-        });
+        let getidx = |c: u8| (c - b'a') as usize;
+        let (s1bytes, s2bytes) = (s1.as_bytes(), s2.as_bytes());
+        let (mut cnt1, mut cnt2) = ([0u8; 26], [0u8; 26]);
+        for (&c1, &c2) in s1bytes.iter().zip(s2bytes.iter()) {
+            cnt1[getidx(c1)] += 1;
+            cnt2[getidx(c2)] += 1;
+        }
 
         let mut matches = cnt1
             .iter()
@@ -35,7 +31,7 @@ impl Solution {
                 return true;
             }
 
-            let (l, r) = (get_idx(s2bytes[i - n1]), get_idx(s2bytes[i]));
+            let (l, r) = (getidx(s2bytes[i - n1]), getidx(s2bytes[i]));
 
             cnt2[r] += 1;
             if cnt1[r] == cnt2[r] {

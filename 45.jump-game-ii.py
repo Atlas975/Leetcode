@@ -11,9 +11,7 @@ class Solution:
         lastidx = len(nums) - 1
 
         while r < lastidx:
-            mxjump = max(i + nums[i] for i in range(l, r + 1))
-            l = r + 1
-            r = mxjump
+            l, r = r + 1, max(i + nums[i] for i in range(l, r + 1))
             res += 1
         return res
 

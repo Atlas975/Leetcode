@@ -31,7 +31,9 @@ class Solution:
             return 2 * fmax - ((fmcnt * (fmcnt - 1) // 2) == edgecnt)
 
         edgecnt = sum(
-            (degrees[u] == fmax and degrees[v] == smax) + (degrees[u] == smax and degrees[v] == fmax) for u, v in roads
+            (degrees[u] == fmax and degrees[v] == smax)
+            + (degrees[u] == smax and degrees[v] == fmax)
+            for u, v in roads
         )
         return fmax + smax - (smcnt == edgecnt)
 

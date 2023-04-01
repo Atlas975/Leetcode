@@ -5,21 +5,17 @@
 #
 
 # @lc code=start
-from collections import Counter, defaultdict
+
 
 class Solution:
     def minWindow(self, s: str, t: str) -> str:
-        sn,tn = len(s),len(t)
-        if sn < tn: return ""
-        scnt, window = Counter(s),defaultdict(int)
+        sn, tn = len(s), len(t)
+        res = ""
+        if sn < tn:
+            return res
 
-        start,end=0,float("inf")
-        for r,c in enumerate(s):
-            
-
-
-
+        l, r = 0, 0
+        w
 
 
 # @lc code=end
-

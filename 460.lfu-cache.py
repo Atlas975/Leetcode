@@ -11,19 +11,18 @@ from collections import OrderedDict, defaultdict
 class LFUCache:
     def __init__(self, cap: int):
         self.cap = cap
-        self.fkv = defaultdict(OrderedDict)
-        self.kf = {}
+        self.fkv = defaultdict(OrderedDict)  # frequency -> key -> value
+        self.kf = {}  # key -> frequency
         self.minf = 1
 
     def update(self, key: int, freq: int, new_val: int) -> None:
         self.fkv[freq + 1][key] = new_val
         self.kf[key] = freq + 1
 
-        if self.fkv[freq]:
-            return
-        del self.fkv[freq]
-        if self.minf == freq:
-            self.minf += 1
+        if len(self.fkv[freq]) == 0:
+            del self.fkv[freq]
+            if self.minf == freq:
+                self.minf += 1
 
     def get(self, key: int) -> int:
         if freq := self.kf.get(key):

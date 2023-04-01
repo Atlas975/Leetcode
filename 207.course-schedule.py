@@ -5,19 +5,31 @@
 #
 
 # @lc code=start
-from collections import defaultdict
-from typing import Counter
+
+from collections import deque
 
 
 class Solution:
-    def CanFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
-        pass
+    def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
+        crsMp = [[] for _ in range(numCourses)]
+        needCnt = [0] * numCourses
 
-    def BuildGraph(self, numCourses: int, prerequisites: List[List[int]]) -> dict:
+        for crs, pre in prerequisites:
+            crsMp[pre].append(crs)
+            needCnt[crs] += 1
 
-        graph = defaultdict(list)
+        q = deque(filter(lambda x: needCnt[x] == 0, range(numCourses)))
+        valid = 0
 
-        return graph
+        while q:
+            pre = q.popleft()
+            valid += 1
+            for crs in crsMp[pre]:
+                needCnt[crs] -= 1
+                if needCnt[crs] == 0:
+                    q.append(crs)
+
+        return valid == numCourses
 
 
 # @lc code=end

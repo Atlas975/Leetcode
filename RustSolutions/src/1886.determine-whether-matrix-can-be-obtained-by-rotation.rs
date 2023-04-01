@@ -6,31 +6,22 @@
 
 // @lc code=start
 impl Solution {
-    pub fn find_rotation(mat: Vec<Vec<i32>>, target: Vec<Vec<i32>>) -> bool {
-        let mut mat = mat;
+    pub fn find_rotation(mut mat: Vec<Vec<i32>>, target: Vec<Vec<i32>>) -> bool {
         let n = mat.len();
 
-        let rotate = |mat: &mut Vec<Vec<i32>>| {
-            for i in 0..n / 2 {
-                for j in i..(n - i - 1) {
-                    let tmp = mat[i][j];
-                    mat[i][j] = mat[n - j - 1][i];
-                    mat[n - j - 1][i] = mat[n - i - 1][n - j - 1];
-                    mat[n - i - 1][n - j - 1] = mat[j][n - i - 1];
-                    mat[j][n - i - 1] = tmp;
-                }
-            }
-        };
-
-        for _ in 0..4 {
-            if mat == target {
-                return true;
-            }
-            rotate(&mut mat);
+        if mat == target {
+            return true;
         }
-        false
-
+        (0..3).any(|_| {
+            for (i, j) in (0..(n / 2)).flat_map(|i| (i..(n - i - 1)).map(move |j| (i, j))) {
+                let (tmp, b, r) = (mat[i][j], n - j - 1, n - i - 1);
+                mat[i][j] = mat[b][i];
+                mat[b][i] = mat[r][b];
+                mat[r][b] = mat[j][r];
+                mat[j][r] = tmp;
+            }
+            mat == target
+        })
     }
 }
 // @lc code=end
-

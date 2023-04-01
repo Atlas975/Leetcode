@@ -20,7 +20,6 @@ class Solution:
         slw, fst = head, head.next
         while slw != fst and (fst and fst.next):
             slw, fst = slw.next, fst.next.next
-
         return slw == fst
 
 

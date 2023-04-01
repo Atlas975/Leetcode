@@ -17,7 +17,7 @@ class Solution:
         prev = head.val
         head = head.next
         mindist = float("inf")
-        maxdist = -1
+        maxdist = -1 
         res = []
         idx = 2
         while head.next:
@@ -34,4 +34,4 @@ class Solution:
         return (-1, -1) if len(res) <= 1 else (mindist, maxdist)
 
 
-# @lc code=end
+# @lc code=ed

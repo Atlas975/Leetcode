@@ -14,7 +14,7 @@ from collections import defaultdict
 class Solution:
     def findRedundantConnection(self, edges: List[List[int]]) -> List[int]:
         n = len(edges)
-        parent = {i: i for i in range(1, n + 1)}
+        parent = 
         rank = defaultdict(int)
 
         def find(u):

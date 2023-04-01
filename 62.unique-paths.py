@@ -1,5 +1,5 @@
 #
-# @lc app=leetcode id=62 lang=python3
+# @lc app=leetcode id=62 lang=python3``
 #
 # [62] Unique Paths
 #

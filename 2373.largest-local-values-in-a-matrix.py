@@ -11,6 +11,9 @@ from itertools import product
 class Solution:
     def largestLocal(self, grid: List[List[int]]) -> List[List[int]]:
         return [
-            [max(grid[i][j] for i, j in product(range(x, x + 3), range(y, y + 3))) for y in range(len(grid[0]) - 2)]
+            [
+                max(grid[i][j] for i, j in product(range(x, x + 3), range(y, y + 3)))
+                for y in range(len(grid[0]) - 2)
+            ]
             for x in range(len(grid) - 2)
         ]

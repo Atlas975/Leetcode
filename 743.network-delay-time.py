@@ -9,57 +9,27 @@
 
 from collections import defaultdict
 import heapq as hq
+from typing import List
 
 
 class Solution:
     def networkDelayTime(self, times: List[List[int]], n: int, k: int) -> int:
-        # graph = defaultdict(list)
-        # for u, v, w in times:
-        #     graph[u].append((v, w))
-
-        # dist = {i: float("inf") for i in range(1, n + 1)}
-        # dist[k] = 0
-        # seen = [False] * (n + 1)
-
-        # def dfs(node, elapsed):
-        #     if seen[node]:
-        #         return
-        #     seen[node], dist[node] = True, min(dist[node], elapsed)
-        #     for nei, d in graph[node]:
-        #         dfs(nei, elapsed + d)
-
-        # dfs(k, 0)
-        # res = max(dist.values())
-        # return res if res < float("inf") else -1
-
-        # while True:
-        #     cand_node = -1
-        #     cand_dist = float("inf")
-        #     for i in range(1, n + 1):
-        #         if not seen[i] and dist[i] < cand_dist:
-        #             cand_dist = dist[i]
-        #             cand_node = i
-
-        #     if cand_node < 0:
-        #         break
-        #     seen[cand_node] = True
-        #     for nei, d in graph[cand_node]:
-        #         dist[nei] = min(dist[nei], dist[cand_node] + d)
-        # res = max(dist.values())
-        # return res if res < float("inf") else -1
-
-        graph = defaultdict(list)
+        edges = [[] for _ in range(n)]
         for u, v, w in times:
-            graph[u].append((v, w))
-        # seen = [False] * (n + 1)
-        dist = {}
-        q = [(0, k)]
+            edges[u - 1].append((v - 1, w))
+        distmp = [float("inf")] * n
+        distmp[k - 1] = 0
+        pq = [(0, k - 1)]
 
-        while q:
-            d, node = hq.heappop(q)
-            if node in dist:
+        while pq:
+            udist, u = hq.heappop(pq)
+            if udist > distmp[u]:
                 continue
-            seen[node] = True
+            for v, weight in edges[u]:
+                if (vdist := udist + weight) < distmp[v]:
+                    distmp[v] = vdist
+                    hq.heappush(pq, (vdist, v))
+        return res if (res := max(distmp)) < float("inf") else -1
 
 
 # @lc code=end

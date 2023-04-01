@@ -18,7 +18,11 @@ class Solution:
                 return True
             visited[r][c] = True
             return any(
-                n > dr >= 0 and m > dc >= 0 and grid[r][c] == grid[dr][dc] and (dr, dc) != prev and dfs(dr, dc, (r, c))
+                n > dr >= 0
+                and m > dc >= 0
+                and grid[r][c] == grid[dr][dc]
+                and (dr, dc) != prev
+                and dfs(dr, dc, (r, c))
                 for dr, dc in ((r - 1, c), (r + 1, c), (r, c - 1), (r, c + 1))
             )
 

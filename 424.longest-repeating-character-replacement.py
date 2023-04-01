@@ -14,8 +14,8 @@ class Solution:
         res, mxfrq, l = 0, 0, 0
 
         for r, c in enumerate(s):
-            freq[int(c)] += 1
-            mxfrq = max(mxfrq, freq[int(c)])
+            freq[ord(c)] += 1
+            mxfrq = max(mxfrq, freq[ord(c)])
             if r - l + 1 - mxfrq > k:
                 freq[int(c)] -= 1
                 l += 1

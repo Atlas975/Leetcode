@@ -10,13 +10,13 @@
 class Solution:
     def partitionLabels(self, s: str) -> List[int]:
         res = []
-        lett = {}
+        lstidx = [0] * 26
         for i, c in enumerate(s):
-            lett[c] = i
+            lstidx[ord(c) - ord("a")] = i
 
         l, r = 0, 0
         for i, c in enumerate(s):
-            r = max(r, lett[c])
+            r = max(r, lstidx[ord(c) - ord("a")])
             if i == r:
                 res.append(r - l + 1)
                 l = r + 1

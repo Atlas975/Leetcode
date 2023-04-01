@@ -5,8 +5,6 @@
 #
 
 # @lc code=start
-from collections import Counter
-from string import ascii_lowercase
 
 
 class Solution:
@@ -14,26 +12,29 @@ class Solution:
         n1, n2 = len(s1), len(s2)
         if n1 > n2:
             return False
+        getidx = lambda c: ord(c) - ord("a")
 
-        let_count = dict.fromkeys(ascii_lowercase, 0)
-        s1_count = let_count | Counter(s1)
-        s2_count = let_count | Counter(s2[:n1])
-        matches = sum(s1_count[c] == s2_count[c] for c in ascii_lowercase)
+        s1cnt, s2cnt = [0] * 26, [0] * 26
+        for c1, c2 in zip(s1, s2):
+            s1cnt[getidx(c1)] += 1
+            s2cnt[getidx(c2)] += 1
+        matches = sum(c1 == c2 for c1, c2 in zip(s1cnt, s2cnt))
 
-        for r in range(n1, n2):
+        for i in range(n1, n2):
             if matches == 26:
                 return True
+            l, r = getidx(s2[i - n1]), getidx(s2[i])
 
-            s2_count[s2[r]] += 1
-            if s1_count[s2[r]] == s2_count[s2[r]]:
+            s2cnt[r] += 1
+            if s1cnt[r] == s2cnt[r]:
                 matches += 1
-            elif s1_count[s2[r]] + 1 == s2_count[s2[r]]:
+            elif s1cnt[r] + 1 == s2cnt[r]:
                 matches -= 1
 
-            s2_count[s2[r - n1]] -= 1
-            if s1_count[s2[r - n1]] == s2_count[s2[r - n1]]:
+            s2cnt[l] -= 1
+            if s1cnt[l] == s2cnt[l]:
                 matches += 1
-            elif s1_count[s2[r - n1]] - 1 == s2_count[s2[r - n1]]:
+            elif s1cnt[l] - 1 == s2cnt[l]:
                 matches -= 1
 
         return matches == 26

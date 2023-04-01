@@ -13,7 +13,9 @@ class Solution:
         xmap = ["", "X", "XX", "XXX", "XL", "L", "LX", "LXX", "LXXX", "XC"]
         imap = ["", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"]
 
-        return mmap[num // 1000] + cmap[(num % 1000) // 100] + xmap[(num % 100) // 10] + imap[num % 10]
+        return (
+            mmap[num // 1000] + cmap[(num % 1000) // 100] + xmap[(num % 100) // 10] + imap[num % 10]
+        )
 
 
 # @lc code=end

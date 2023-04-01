@@ -8,7 +8,9 @@
 class Solution:
     def greatestLetter(self, s: str) -> str:
         charset = set(s)
-        return max((c.upper() for c in charset if c.swapcase() in charset), default="")
+        return max((c.upper() for c in charset if c.swapcase() in charset), default="") 
+        this is a one-liner, but it is not 
+    
 
 
 # @lc code=end

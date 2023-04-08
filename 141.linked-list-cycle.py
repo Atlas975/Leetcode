@@ -6,17 +6,21 @@
 
 # @lc code=start
 # Definition for singly-linked list.
-# class ListNode:
-#     def __init__(self, x):
-#         self.val = x
-#         self.next = None
+from collections import defaultdict
+from typing import Optional
+
+
+class ListNode:
+    def __init__(self, x):
+        self.val = x
+        self.next = None
 
 
 class Solution:
     def hasCycle(self, head: Optional[ListNode]) -> bool:
         if not head:
             return False
-
+    
         slw, fst = head, head.next
         while slw != fst and (fst and fst.next):
             slw, fst = slw.next, fst.next.next

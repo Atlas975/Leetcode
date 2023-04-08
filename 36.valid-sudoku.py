@@ -6,15 +6,15 @@
 
 # @lc code=start
 
-from itertools import product
 from collections import defaultdict
+from itertools import product
 
 
 class Solution:
     def isValidSudoku(self, board):
         cols, rows, grid = defaultdict(set), defaultdict(set), defaultdict(set)
 
-        for r, c in product(range(9), repeat=2):
+        for r, c in product(range(9), range(9)):
             tile = board[r][c]
             if tile == ".":
                 continue

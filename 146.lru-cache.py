@@ -8,48 +8,48 @@
 
 
 class Node:
-    def __init__(self, key=0, value=0, pre=None, nex=None):
-        self.key = key
-        self.value = value
-        self.pre = pre
-        self.nex = nex
+    def __init__(p, key=0, value=0, pre=None, nex=None):
+        p.key = key
+        p.value = value
+        p.pre = pre
+        p.nex = nex
 
 
 class LRUCache:
-    def __init__(self, cap: int):
-        self.cap = cap
-        self.cache = {}
-        self.left, self.right = Node(), Node()
-        self.left.nex, self.right.pre = self.right, self.left
+    def __init__(p, cap: int):
+        p.cap = cap
+        p.cache = {}
+        p.left, p.right = Node(), Node()
+        p.left.nex, p.right.pre = p.right, p.left
 
-    def append(self, node: Node) -> None:
-        l, r = self.right.pre, self.right
+    def append(p, node: Node) -> None:
+        l, r = p.right.pre, p.right
         node.pre, node.nex = l, r
         l.nex = r.pre = node
-        self.cache[node.key] = node
+        p.cache[node.key] = node
 
-    def pop(self, key: int) -> Node:
-        node = self.cache.pop(key)
+    def pop(p, key: int) -> Node:
+        node = p.cache.pop(key)
         l, r = node.pre, node.nex
         l.nex, r.pre = r, l
         return node
 
-    def get(self, key: int) -> int:
-        if node := self.cache.get(key):
-            self.append(self.pop(key))
+    def get(p, key: int) -> int:
+        if node := p.cache.get(key):
+            p.append(p.pop(key))
             return node.value
         return -1
 
-    def put(self, key: int, value: int) -> None:
-        if node := self.cache.get(key):
+    def put(p, key: int, value: int) -> None:
+        if node := p.cache.get(key):
             node.value = value
-            self.append(self.pop(key))
+            p.append(p.pop(key))
             return
 
-        if len(self.cache) == self.cap:
-            lru = self.left.nex
-            self.pop(lru.key)
-        self.append(Node(key, value))
+        if len(p.cache) == p.cap:
+            lru = p.left.nex
+            p.pop(lru.key)
+        p.append(Node(key, value))
 
 
 # Your LRUCache object will be instantiated and called as such:

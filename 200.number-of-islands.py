@@ -18,7 +18,7 @@ class Solution:
 
             grid[r][c] = "0"
             for dr, dc in ((r - 1, c), (r + 1, c), (r, c - 1), (r, c + 1)):
-                if 0 <= dr < n and 0 <= dc < m:
+                if 0 <= dr < n and 0 <= dc < m: 
                     dfs(dr, dc)
             return 1
 

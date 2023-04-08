@@ -6,6 +6,8 @@
 
 # @lc code=start
 
+from typing import List
+
 
 class Solution:
     def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
@@ -20,7 +22,7 @@ class Solution:
                     bfs(cand[i:], path + [num], new_sum)
 
         bfs(candidates, [], 0)
-        return res
+        return 0
 
 
 # @lc code=end

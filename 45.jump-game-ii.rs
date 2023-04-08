@@ -19,9 +19,8 @@ impl Solution {
                 .unwrap();
             current_jump_end = tmp + 1;
             jumps += 1;
+        }
         jumps
-        
     }
 }
 // @lc code=end
-

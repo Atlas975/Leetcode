@@ -10,8 +10,7 @@ class Solution:
         res = prev = 0
         for bracket in brackets:
             if income < bracket[0]:
-                res += (income - prev) * (bracket[1] / 100)
-                return res
+                return res + (income - prev) * (bracket[1] / 100)
             else:
                 res += (bracket[0] - prev) * (bracket[1] / 100)
                 prev = bracket[0]

@@ -9,26 +9,23 @@ impl Solution {
     pub fn max_profit(prices: Vec<i32>) -> i32 {
         // Functional version
         prices
-            .into_iter()
-            .fold((0, i32::MAX), |(mxprof, cost), price| {
-                if price < cost {
-                    (mxprof, price)
-                } else {
-                    (mxprof.max(price - cost), cost)
-                }
-            })
-            .0
+        .into_iter()
+        .fold((0, i32::MAX), |(mxprof, cost), price| match price < cost {
+            true => (mxprof, price),
+            false => (mxprof.max(price - cost), cost),
+        })
+        .0
 
-        // Imperative version
-        let (mut mxprof, mut cost) = (0, prices[0]);
-        for price in prices.into_iter().skip(1) {
-            if price < cost {
-                cost = price;
-            } else {
-                mxprof = mxprof.max(price - cost);
-            }
-        }
-        mxprof
+        // // Imperative version
+        // let (mut mxprof, mut cost) = (0, prices[0]);
+        // for price in prices.into_iter().skip(1) {
+        //     if price < cost {
+        //         cost = price;
+        //     } else {
+        //         mxprof = mxprof.max(price - cost);
+        //     }
+        // }
+        // mxprof
     }
 }
 // @lc code=end

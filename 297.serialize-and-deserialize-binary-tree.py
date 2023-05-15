@@ -15,18 +15,31 @@
 
 class Codec:
     def serialize(self, root):
-        """Encodes a tree to a single string.
+        res = []
 
-        :type root: TreeNode
-        :rtype: str
-        """
+        def postord(node):
+            if not node:
+                res.append("null")
+                return
+            res.append(str(node.val))
+            postord(node.left)
+            postord(node.right)
+
+        postord(root)
+        return ",".join(res)
 
     def deserialize(self, data):
-        """Decodes your encoded data to tree.
+        def postord():
+            val = next(data)
+            if val == "#":
+                return None
+            node = TreeNode(int(val))
+            node.left = postord()
+            node.right = postord()
+            return node
 
-        :type data: str
-        :rtype: TreeNode
-        """
+        data = iter(data.split(","))
+        return postord()
 
 
 # Your Codec object will be instantiated and called as such:

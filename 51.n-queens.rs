@@ -18,21 +18,21 @@ impl Solution {
             res: &mut Vec<Vec<String>>,
             n: usize,
         ) {
-            for c in 0..n {
-                if (cols & (1 << c)) != 0
-                    || (pdiag & (1 << (r + c))) != 0
-                    || (ndiag & (1 << (r - c + n))) != 0
-                {
-                    continue;
-                }
-                if r == n - 1 {
-                    path.push(format!("{}Q{}", ".".repeat(c), ".".repeat(n - c - 1),));
+            if r == n - 1 {
+                for c in (0..n).filter(|&c| {
+                    (cols & (1 << c)) | (pdiag & (1 << (r + c))) | (ndiag & (1 << (r - c + n))) == 0
+                }) {
+                    path.push(format!("{}Q{}", ".".repeat(c), ".".repeat(n - c - 1)));
                     res.push(path.clone());
                     path.pop();
-                    return;
                 }
+                return;
+            }
 
-                path.push(format!("{}Q{}", ".".repeat(c), ".".repeat(n - c - 1),));
+            for c in (0..n).filter(|&c| {
+                (cols & (1 << c)) | (pdiag & (1 << (r + c))) | (ndiag & (1 << (r - c + n))) == 0
+            }) {
+                path.push(format!("{}Q{}", ".".repeat(c), ".".repeat(n - c - 1)));
                 dfs(
                     r + 1,
                     path,
@@ -51,4 +51,3 @@ impl Solution {
     }
 }
 // @lc code=end
-

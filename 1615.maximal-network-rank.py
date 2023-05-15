@@ -4,6 +4,7 @@
 # [1615] Maximal Network Rank
 #
 
+
 # @lc code=start
 class Solution:
     def maximalNetworkRank(self, n: int, roads: List[List[int]]) -> int:
@@ -12,30 +13,27 @@ class Solution:
             degrees[u] += 1
             degrees[v] += 1
 
-        fmax = smax = 0
+        mx1 = mx2 = mx2cnt = mx1cnt = 0
         for degree in degrees:
-            if degree > fmax:
-                fmax, smax = degree, fmax
-            elif degree > smax:
-                smax = degree
+            if degree > mx1:
+                mx1, mx2 = degree, mx1
+                mx1cnt, mx2cnt = 1, mx1cnt
+            elif degree == mx1:
+                mx1cnt += 1
+            elif degree > mx2:
+                mx2 = degree
+                mx2cnt = 1
+            elif degree == mx2:
+                mx2cnt += 1
 
-        fmcnt = smcnt = 0
-        for degree in degrees:
-            if degree == fmax:
-                fmcnt += 1
-            elif degree == smax:
-                smcnt += 1
-
-        if fmcnt >= 2:
-            edgecnt = sum((degrees[u] == fmax and degrees[v] == fmax) for u, v in roads)
-            return 2 * fmax - ((fmcnt * (fmcnt - 1) // 2) == edgecnt)
+        if mx1cnt > 1:
+            edgecnt = sum((degrees[u] == mx1 and degrees[v] == mx1) for u, v in roads)
+            return 2 * mx1 - ((mx1cnt * (mx1cnt - 1) // 2) == edgecnt)
 
         edgecnt = sum(
-            (degrees[u] == fmax and degrees[v] == smax)
-            + (degrees[u] == smax and degrees[v] == fmax)
-            for u, v in roads
+            (degrees[u] == mx1 and degrees[v] == mx2) + (degrees[u] == mx2 and degrees[v] == mx1) for u, v in roads
         )
-        return fmax + smax - (smcnt == edgecnt)
+        return mx1 + mx2 - (mx2cnt == edgecnt)
 
 
 # @lc code=end

@@ -8,14 +8,14 @@
 # @lc code=start
 class Solution:
     def maxArea(self, h: int, w: int, horizontalCuts: List[int], verticalCuts: List[int]) -> int:
-        def max_gap(size, cuts):
-            cuts.sort()
-            mxSize = max(cuts[0], size - cuts[-1])
-            for i in range(1, len(cuts)):
-                mxSize = max(mxSize, cuts[i] - cuts[i - 1])
-            return mxSize
-
-        return max_gap(h, horizontalCuts) * max_gap(w, verticalCuts)) % (10**9 + 7)
+        max_gap = lambda size, cuts: max(
+            cuts[0],
+            size - cuts[-1],
+            max((cuts[i] - cuts[i - 1] for i in range(1, len(cuts))), default=0),
+        )
+        horizontalCuts.sort()
+        verticalCuts.sort()
+        return max_gap(h, horizontalCuts) * max_gap(w, verticalCuts) % (10**9 + 7)
 
 
 # @lc code=end

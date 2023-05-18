@@ -1,4 +1,4 @@
-#
+    #
 # @lc app=leetcode id=21 lang=python3
 #
 # [21] Merge Two Sorted Lists

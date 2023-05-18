@@ -4,6 +4,7 @@
 # [153] Find Minimum in Rotated Sorted Array
 #
 
+
 # @lc code=start
 class Solution:
     def findMin(self, nums: List[int]) -> int:
@@ -13,7 +14,7 @@ class Solution:
             if nums[m] > nums[r]:
                 l = m + 1
             else:
-                r = m
+                r = m # cap at m
         return nums[l]
 
 

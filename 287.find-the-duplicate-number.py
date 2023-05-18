@@ -9,17 +9,13 @@
 
 class Solution:
     def findDuplicate(self, nums: List[int]) -> int:
-
-        slw, fst = nums[0], nums[0]
-        while True:
+        slw, fst = nums[0], nums[nums[0]]
+        while (slw != fst):
             slw, fst = nums[slw], nums[nums[fst]]
-            if slw == fst:
-                break
 
-        slw = nums[0]
-        while slw != fst:
-            slw, fst = nums[slw], nums[fst]
-
+        slw2 = 0
+        while (slw != slw2):
+            slw, slw2 = nums[slw], nums[slw2]
         return slw
 
 

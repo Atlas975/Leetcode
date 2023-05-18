@@ -32,7 +32,7 @@ class Solution:
         def dfs(node, l, r):
             if node is None:
                 return True
-            if node.val <= l or node.val >= r:
+            if node.val <= l or node.val >= r: # tree has no duplicates
                 return False
             return dfs(node.left, l, node.val) and dfs(node.right, node.val, r)
 

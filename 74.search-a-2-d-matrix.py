@@ -7,21 +7,20 @@
 # @lc code=start
 class Solution:
     def searchMatrix(self, matrix: list[list[int]], target: int) -> bool:
-        n, m = len(matrix), len(matrix[0])
-        l, r = 0, n * m - 1
+        nr, nc = len(matrix), len(matrix[0])
+        l, r = 0, nr * nc - 1
 
-        while l < r:
-            mid = l + (r - l) // 2
-            mval = matrix[mid // m][mid % m]
+        while l <= r:
+            m = l + (r - l) // 2
+            mval = matrix[m // nc][m % nc]
 
             if mval < target:
-                l = mid + 1
+                l = m + 1
             elif mval > target:
-                r = mid - 1
+                r = m - 1
             else:
                 return True
-
-        return matrix[l // m][l % m] == target
+        return False
 
 
 # @lc code=end

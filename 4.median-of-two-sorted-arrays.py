@@ -20,10 +20,10 @@ class Solution:
             mB = (l + r) // 2
             mA = half - mB
 
-            lA = nums1[mA - 1] if (mA != 0) else float("-inf")
-            rA = nums1[mA] if (mA != nA) else float("inf")
-            lB = nums2[mB - 1] if (mB != 0) else float("-inf")
-            rB = nums2[mB] if (mB != nB) else float("inf")
+            lA = nums1[mA - 1] if mA != 0 else float("-inf")
+            rA = nums1[mA] if mA != nA else float("inf")
+            lB = nums2[mB - 1] if mB != 0 else float("-inf")
+            rB = nums2[mB] if mB != nB else float("inf")
 
             if lA > rB:
                 l = mB + 1

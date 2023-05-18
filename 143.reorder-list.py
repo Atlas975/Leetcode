@@ -19,22 +19,19 @@ class Solution:
         """
 
         slw, fst = head, head.next
-        while fst and fst.next:  # find middle
+        while fst and fst.next:  # if odd, slw stops at mid else n/2
             slw = slw.next
             fst = fst.next.next
 
-        curr = slw.next
-        fsthead = slw.next = None
-        while curr:  # reverse second half
-            nex = curr.next
-            curr.next = fsthead
-            fsthead = curr
-            curr = nex
+        cur = slw.next
+        fst = slw.next = None
+        while cur:  # reverse second half
+            cur.next, fst, cur = fst, cur, cur.next
 
-        while fsthead:  # merge
-            nex1, nex2 = head.next, fsthead.next
-            head.next, fsthead.next = fsthead, nex1
-            head, fsthead = nex1, nex2
+        while fst:  # merge
+            l1_nex, l2_nex = head.next, fst.next
+            head.next, fst.next = fst, l1_nex
+            head, fst = l1_nex, l2_nex
 
 
 # @lc code=end

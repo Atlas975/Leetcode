@@ -40,7 +40,7 @@ class Solution:
             pre = root
             root = root.right
 
-        n1.val, n2.val = n2.val, n1.val
+        # n1.val, n2.val = n2.val, n1.val
 
 
 # @lc code=end

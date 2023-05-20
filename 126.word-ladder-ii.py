@@ -12,6 +12,88 @@ from typing import List
 
 class Solution:
     def findLadders(self, beginWord: str, endWord: str, wordList: List[str]) -> List[List[str]]:
+        size = len(wordList[0])
+        adjs = dict()
+        visited = set()
+        for word in wordList:
+            for i in range(size):
+                key = word[0:i] + "*" + word[i + 1 : size]
+                if key in adjs:
+                    adjs[key].append(word)
+                else:
+                    # adjs[key] = [word]
+
+        # q = deque()
+        q.append(beginWord)
+        visited.add(beginWord)
+
+        check = False
+        l_stack = []
+
+        while q and not check:
+            q_size = len(q)
+
+            temp = set()
+            for _ in range(q_size):
+                word = q.popleft()
+                temp.add(word)
+
+                for i in range(size):
+                    key = word[0:i] + "*" + word[i + 1 : size]
+                    if key in adjs:
+                        for neighbor in adjs[key]:
+                            if neighbor == endWord:
+                                check = True
+                            if neighbor not in visited:
+                                q.append(neighbor)
+                                visited.add(neighbor)
+                            else:
+                                pass
+            l_stack.append(temp)
+
+        if not check:
+            return []
+
+        l_size = len(l_stack)
+
+        final = []
+        k = l_size - 1
+        cand = l_stack[k]
+        for i in range(size):
+            key = endWord[0:i] + "*" + endWord[i + 1 : size]
+            if key in adjs:
+                for neighbor in adjs[key]:
+                    if neighbor in cand:
+                        final.append([neighbor, endWord])
+        for i in range(1, l_size):
+            k = l_size - 1 - i
+            temp_dict = {}
+            l_f = len(final)
+            cand = l_stack[k]
+
+            for j in range(l_f):
+                path = final.pop()
+                word = path[0]
+                if k > 0:
+                    if word in temp_dict:
+                        keys = temp_dict[word]
+                        for key in keys:
+                            final.insert(0, [key] + path)
+                    else:
+                        temp_dict[word] = []
+
+                        for i in range(size):
+                            key = word[0:i] + "*" + word[i + 1 : size]
+                            if key in adjs:
+                                for neighbor in adjs[key]:
+                                    if neighbor in cand:
+                                        temp_dict[word].append(neighbor)
+                                        final.insert(0, [neighbor] + path)
+                else:
+                    final.insert(0, [beginWord] + path)
+
+        return final
+
         # word_set, reverse = set(wordList), False
         # res = []
         # if endWord not in word_set:
@@ -41,77 +123,6 @@ class Solution:
         # return res
 
         # Use bidirectional BFS to find the shortest path
-
-        wordSet = set(wordList)
-        if endWord not in wordSet:
-            return []
-        
-        bq, eq = deque([beginWord]), deque([endWord])
-        bvis, evis = {beginWord}, {endWord}
-        
-        beginVisited = set()
-        endVisited = set()
-        beginVisited.add(beginWord)
-        endVisited.add(endWord)
-        
-        wordParents = defaultdict(list)
-        isForward = True
-        isFound = False
-        
-        def backtrace(word, parents, path, results):
-            if word == beginWord:
-                results.append(path[::-1])
-                return
-            for parent in parents[word]:
-                path.append(parent)
-                backtrace(parent, parents, path, results)
-                path.pop()
-        
-        def generateWords(word):
-            words = []
-            for i in range(len(word)):
-                for char in 'abcdefghijklmnopqrstuvwxyz':
-                    newWord = word[:i] + char + word[i+1:]
-                    if newWord != word and newWord in wordSet:
-                        words.append(newWord)
-            return words
-        
-        while beginQueue and endQueue:
-            if len(beginQueue) > len(endQueue):
-                beginQueue, endQueue = endQueue, beginQueue
-                beginVisited, endVisited = endVisited, beginVisited
-                isForward = not isForward
-            
-            size = len(beginQueue)
-            for _ in range(size):
-                currentWord = beginQueue.popleft()
-                wordChars = list(currentWord)
-                for i in range(len(wordChars)):
-                    originalChar = wordChars[i]
-                    for char in 'abcdefghijklmnopqrstuvwxyz':
-                        wordChars[i] = char
-                        transformedWord = ''.join(wordChars)
-                        if transformedWord in endVisited:
-                            isFound = True
-                            if isForward:
-                                wordParents[currentWord].append(transformedWord)
-                            else:
-                                wordParents[transformedWord].append(currentWord)
-                        if transformedWord not in beginVisited and transformedWord in wordSet:
-                            if isForward:
-                                wordParents[currentWord].append(transformedWord)
-                            else:
-                                wordParents[transformedWord].append(currentWord)
-                            beginQueue.append(transformedWord)
-                            beginVisited.add(transformedWord)
-                    wordChars[i] = originalChar
-            
-            if isFound:
-                break
-        
-        results = []
-        backtrace(endWord, wordParents, [endWord], results)
-        return results
 
 
 # @lc code=end

@@ -19,11 +19,13 @@ class Solution:
             time += 1
             if tasks := hq.heappop(mxheap) + 1:
                 q.append((tasks, time + n))
-            if q:
-                if not mxheap:
-                    time = q[0][1]
-                if time == q[0][1]:
-                    hq.heappush(mxheap, q.popleft()[0])
+            if not q:
+                continue
+            if not mxheap:
+                tasks, time = q.popleft()
+                hq.heappush(mxheap, tasks)
+            elif time == q[0][1]:
+                hq.heappush(mxheap, q.popleft()[0])
         return time
 
 

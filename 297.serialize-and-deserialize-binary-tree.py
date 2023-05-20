@@ -16,10 +16,9 @@
 class Codec:
     def serialize(self, root):
         res = []
-
         def postord(node):
-            if not node:
-                res.append("null")
+            if node is None:
+                res.append("#")
                 return
             res.append(str(node.val))
             postord(node.left)
@@ -29,17 +28,16 @@ class Codec:
         return ",".join(res)
 
     def deserialize(self, data):
-        def postord():
-            val = next(data)
+        def postord(serialiter):
+            val = next(serialiter)
             if val == "#":
                 return None
             node = TreeNode(int(val))
-            node.left = postord()
-            node.right = postord()
+            node.left = postord(serialiter)
+            node.right = postord(serialiter)
             return node
 
-        data = iter(data.split(","))
-        return postord()
+        return postord(iter(data.split(",")))
 
 
 # Your Codec object will be instantiated and called as such:

@@ -17,7 +17,7 @@ class Solution:
             crsMp[pre].append(crs)
             needCnt[crs] += 1
 
-        q = deque(filter(lambda x: needCnt[x] == 0, range(numCourses)))
+        q = deque([i for i in range(numCourses) if needCnt[i] == 0]) # no preq
         res = []
 
         while q:
@@ -25,9 +25,8 @@ class Solution:
             res.append(pre)
             for crs in crsMp[pre]:
                 needCnt[crs] -= 1
-                if needCnt[crs] == 0:
+                if needCnt[crs] == 0: # no more preq
                     q.append(crs)
-
         return res if len(res) == numCourses else []
 
 

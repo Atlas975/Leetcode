@@ -7,23 +7,16 @@
 # @lc code=start
 class Solution:
     def eraseOverlapIntervals(self, intervals: List[List[int]]) -> int:
-        res, end = 0, float("-inf")
-        for l, r in sorted(intervals, key=lambda x: x[1]):
-            if l >= end:
+        intervals.sort(key=lambda x: x[1])
+        res, end = 0, intervals[0][0]
+
+        for l, r in intervals[1:]:
+            if l >= end: # no overlap, keep this interval
                 end = r
-            else:
+            else: # overlap, 1 more interval to remove
                 res += 1
         return res
 
-    def can_attend_meetings(self, intervals: List[Interval]) -> bool:
-        # Write your code here
-        i1 = intervals[0]
-        is_overlap = lambda a, b: max(a[0], b[0]) <= min(a[1], b[1])
-
-        for i in range(1, len(intervals)):
-            if is_overlap(i1, intervals[i]):
-                return False
-            i1 = max(i1, intervals[i], key=lambda x: x[1])
 
 
 # @lc code=end

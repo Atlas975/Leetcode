@@ -8,6 +8,7 @@
 
 
 from itertools import product
+from math import e
 
 
 class Solution:
@@ -16,11 +17,12 @@ class Solution:
         n1, n2 = len(text1), len(text2)
         dp = [[0] * (n2 + 1) for _ in range(n1 + 1)]
 
-        for i, j in product(range(1, n1 + 1), range(1, n2 + 1)):
-            if text1[i - 1] == text2[j - 1]:
-                dp[i][j] = 1 + dp[i - 1][j - 1]
-                continue
-            dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])
+        for i, j in product(range(n1), range(n2)):
+            dp[i + 1][j + 1] = (
+                1 + dp[i][j]
+                if text1[i] == text2[j]
+                else max(dp[i][j + 1], dp[i + 1][j])
+            )
         return dp[-1][-1]
 
         # RECURSIVE
@@ -43,3 +45,4 @@ class Solution:
 
 
 # @lc code=end
+print(Solution().longestCommonSubsequence("abcde", "ace"))

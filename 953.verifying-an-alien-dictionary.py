@@ -4,17 +4,20 @@
 # [953] Verifying an Alien Dictionary
 #
 
+
 # @lc code=start
 class Solution:
     def isAlienSorted(self, words: List[str], order: str) -> bool:
-        order_dict = {c: i for i, c in enumerate(order)}
-        lexmap = lambda word: [order_dict[c] for c in word]
+        ordmp = {c: i for i, c in enumerate(order)}
+        def isOrdered(w1, w2) -> bool:
+            for a, b in ((ordmp[c1], ordmp[c2]) for c1, c2 in zip(w1, w2)):
+                if a < b:
+                    return True
+                if a > b:
+                    return False
+            return len(w1) <= len(w2)
+        return all(isOrdered(words[i - 1], words[i]) for i in range(1, len(words)))
 
-        prev = lexmap(words[0])
-        return all(prev <= (prev := lexmap(word)) for word in words[1:])
-
-        # words=[[order_dict[c] for c in word] for word in words]
-        # return all(w1<=w2 for w1,w2 in zip(words,words[1:]))
 
 
 # @lc code=end

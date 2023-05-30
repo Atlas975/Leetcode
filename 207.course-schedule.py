@@ -18,7 +18,7 @@ class Solution:
             crsMp[pre].append(crs)
             needCnt[crs] += 1
 
-        q = deque(filter(lambda x: needCnt[x] == 0, range(numCourses)))
+        q = deque([i for i in range(numCourses) if needCnt[i] == 0])  # no preq
         valid = 0
 
         while q:
@@ -28,7 +28,6 @@ class Solution:
                 needCnt[crs] -= 1
                 if needCnt[crs] == 0:
                     q.append(crs)
-
         return valid == numCourses
 
 

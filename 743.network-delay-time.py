@@ -7,7 +7,6 @@
 # @lc code=start
 
 
-from collections import defaultdict
 import heapq as hq
 from typing import List
 

@@ -5,29 +5,27 @@
 #
 
 # @lc code=start
-from collections import deque
 import random
 
 
 class RandomizedSet:
     def __init__(self):
         self.mp = {}
-        self.s = deque()
+        self.s = []
 
     def insert(self, val: int) -> bool:
-        not_exists = val not in self.mp
-        if not_exists:
+        if not_exists := val not in self.mp:
             self.mp[val] = len(self.s)
             self.s.append(val)
         return not_exists
 
     def remove(self, val: int) -> bool:
-        exists = val in self.mp
-        if exists:
-            self.mp[self.s[-1]] = self.mp[val]
-            self.s[self.mp[val]] = self.s[-1]
+        if exists := val in self.mp:
+            del_i, lst_v = self.mp[val], self.s[-1]
+            self.mp[lst_v] = del_i # last gets the old index
+            self.s[del_i] = lst_v
             self.s.pop()
-            del self.mp[val]
+            self.mp.pop(val)
         return exists
 
     def getRandom(self) -> int:

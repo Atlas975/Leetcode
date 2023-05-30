@@ -1,9 +1,7 @@
 from typing import (
     List,
 )
-from lintcode import (
-    Interval,
-)
+
 
 """
 Definition of Interval:
@@ -20,12 +18,8 @@ class Solution:
     @return: if a person could attend all meetings
     """
 
-    def can_attend_meetings(self, intervals: List[Interval]) -> bool:
-        intervals.sort(key=lambda i: i.start)
-        for i, interval in enumerate(intervals[1:]):
-            prev = intervals[i - 1]
-            if prev.end > interval.start:
-                return False
-        return True
+    def canAttendMeetings(self, intervals: List[List[int]]) -> bool:
+        intervals.sort(key=lambda i: i[0])
+        return all(m1[1] <= m2[0] for m1, m2 in zip(intervals, intervals[1:]))
 
         # Write your code here

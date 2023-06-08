@@ -5,7 +5,6 @@
 #
 
 # @lc code=start
-from functools import cache
 from itertools import product, starmap
 
 
@@ -14,18 +13,16 @@ class Solution:
         n, m = len(matrix), len(matrix[0])
         dp = [[None] * m for _ in range(n)]
 
-        def dfs(r, c, outbound=False, prev=float("-inf")):
-            if outbound or prev >= matrix[r][c]:
+        def dfs(r, c, prev=float("-inf")):
+            if prev >= matrix[r][c]:
                 return 0
             if dp[r][c]:
                 return dp[r][c]
-
-            cur = matrix[r][c]
             dp[r][c] = 1 + max(
-                dfs(r + 1, c, r == n - 1, cur),
-                dfs(r - 1, c, r == 0, cur),
-                dfs(r, c + 1, c == m - 1, cur),
-                dfs(r, c - 1, c == 0, cur),
+                dfs(r + 1, c, matrix[r][c]) if r < n - 1 else 0,
+                dfs(r - 1, c, matrix[r][c]) if r > 0 else 0,
+                dfs(r, c + 1, matrix[r][c]) if c < m - 1 else 0,
+                dfs(r, c - 1, matrix[r][c]) if c > 0 else 0,
             )
             return dp[r][c]
 

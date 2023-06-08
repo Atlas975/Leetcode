@@ -4,15 +4,17 @@
 # [518] Coin Change II
 #
 
+
 # @lc code=start
 class Solution:
     def change(self, amount: int, coins: List[int]) -> int:
-        # coins = sorted((c for c in coins if c <= amount), reverse=True)
-        coins = [c for c in coins if c <= amount]
-        if len(coins) == 0:
-            return 1 if amount == 0 else 0
+        dp = [0] * (amount + 1)
+        dp[0] = 1
 
-        def backtrack
-        
+        for c in coins: # can only use each coin once (combination)
+            for a in range(c, amount + 1):
+                dp[a] += dp[a - c]
+        return dp[amount]
+
+
 # @lc code=end
-

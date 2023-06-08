@@ -5,7 +5,8 @@
 #
 
 # @lc code=start
-from itertools import product, starmap
+from collections import Counter
+from itertools import chain, product, starmap
 
 
 class Solution:
@@ -31,10 +32,10 @@ class Solution:
             board[r][c] = word[i - 1]
             return valid
 
-        cnts = [0] * 58
-        for r, c in product(range(n), range(m)):
-            cnts[ord(board[r][c]) - ord("A")] += 1
-        if cnts[ord(word[0]) - ord("A")] > cnts[ord(word[-1]) - ord("A")]:
+        wordcnt, boardcnt = Counter(word), Counter(chain(*board))
+        if any(wordcnt[c] > boardcnt[c] for c in wordcnt):
+            return False
+        if wordcnt[word[0]] > wordcnt[word[-1]]:
             word = word[::-1]
         return any(starmap(dfs, product(range(n), range(m))))
 

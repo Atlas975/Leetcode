@@ -5,8 +5,15 @@
 #
 
 # @lc code=start
+from functools import cache
+
+
 class Solution:
     def maxCoins(self, nums: List[int]) -> int:
-        
-# @lc code=end
+        nums = [1] + nums + [1]
+        n = len(nums) - 2
 
+        for 
+
+
+# @lc code=end

@@ -9,40 +9,38 @@ use std::collections::HashSet;
 
 impl Solution {
     pub fn coin_change(coins: Vec<i32>, amount: i32) -> i32 {
-        let coins = coins
+        let coins: Vec<usize> = coins
             .into_iter()
             .filter(|&c| c <= amount)
             .map(|c| c as usize)
-            .collect::<HashSet<_>>();
+            .collect();
+        let amount = amount as usize;
+
         if coins.is_empty() {
             return if amount == 0 { 0 } else { -1 };
         }
+        let n = coins.iter().max().unwrap() + 1;
+        let mut dp = vec![usize::MAX; n];
 
-        let mut dp = vec![i32::MAX; amount as usize + 1];
-        let (minc, maxc) = (
-            *coins.iter().min().unwrap() as usize,
-            *coins.iter().max().unwrap() as usize,
-        );
         dp[0] = 0;
-        dp[minc] = 1;
-        dp[maxc] = 1;
-
-        for a in (minc + 1)..maxc {
-            dp[a] = 1 + coins
-                .iter()
-                .filter(|&&c| c <= a)
-                .map(|&c| dp[a - c])
-                .min()
-                .unwrap();
-        }
-        for a in (maxc + 1)..=amount as usize {
-            dp[a] = 1 + coins.iter().map(|&c| dp[a - c]).min().unwrap();
+        dp[n - 1] = 1;
+        for &c in &coins {
+            for a in c..(n - 1) {
+                dp[a] = dp[a].min(1 + dp[a - c]);
+            }
         }
 
-        if dp[amount as usize + 1] == i32::MAX {
-            -1
+        for a in n..=amount {
+            dp[a % n] = 1 + coins.iter().map(|&c| dp[(a - c) % n]).min().unwrap();
+        }
+
+        println!("{:?}", dp);
+        println!("{:?}", amount % n);
+
+        if dp[amount % n] != usize::MAX {
+            dp[amount % n] as i32
         } else {
-            dp[amount as usize + 1]
+            -1
         }
     }
 }

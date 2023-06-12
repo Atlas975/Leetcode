@@ -5,6 +5,7 @@
 #
 
 # @lc code=start
+from functools import cache
 from itertools import product
 
 
@@ -22,29 +23,29 @@ class Solution:
 
         """
         n, m = len(board), len(board[0])
-        count_neighbours = lambda r, c: (
-            sum(
-                0 <= nr < n and 0 <= nc < m and board[nr][nc] % 2
-                for nr, nc in (
-                    (r - 1, c - 1),
-                    (r - 1, c),
-                    (r - 1, c + 1),
-                    (r, c - 1),
-                    (r, c + 1),
-                    (r + 1, c - 1),
-                    (r + 1, c),
-                    (r + 1, c + 1),
-                )
-            )
-        )
+
+
+
+        @cache
+        def alive_cnt(r, c):
+            cnt = 0
+            lc, rc = c > 0, c < m - 1
+            if r > 0:
+                lo = board[r - 1]
+                cnt += (lo[c] % 2) + (lc and lo[c - 1] % 2) + (rc and lo[c + 1] % 2)
+            if r < n - 1:
+                hi = board[r + 1]
+                cnt += (hi[c] % 2) + (lc and hi[c - 1] % 2) + (rc and hi[c + 1] % 2)
+            return cnt + (lc and board[r][c - 1] % 2) + (rc and board[r][c + 1] % 2)
 
         for r, c in product(range(n), range(m)):
-            count = count_neighbours(r, c)
-            if (board[r][c] == 1 and count in {2, 3}) or (board[r][c] == 0 and count == 3):
-                board[r][c] |= 2
+            cnt = alive_cnt(r, c)
+            if (board[r][c] == 1 and cnt in (2, 3)) or (board[r][c] == 0 and cnt == 3):
+                board[r][c] += 2
 
         for r, c in product(range(n), range(m)):
             board[r][c] >>= 1
 
 
 # @lc code=end
+ 

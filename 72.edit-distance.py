@@ -13,7 +13,7 @@ from functools import cache
 class Solution:
     def minDistance(self, word1: str, word2: str) -> int:
         n1, n2 = len(word1), len(word2)
-        
+
         # ITERATIVE
         res = 0
         q = deque([(0, 0)])
@@ -27,9 +27,14 @@ class Solution:
                 while i < n1 and j < n2 and word1[i] == word2[j]:
                     i += 1
                     j += 1
-                if i == n1 and j == n2:
-                    return res
-                q.extend([(i + 1, j), (i, j + 1), (i + 1, j + 1)])
+                if i == n1: 
+                    if j == n2:
+                        return res
+                    q.append((i, j + 1)) # insert
+                elif j == n2:
+                    q.append((i + 1, j)) # delete
+                else: # try insert, delete, replace
+                    q.extend([(i, j + 1), (i + 1, j), (i + 1, j + 1)])
             res += 1
         return res
 
@@ -45,8 +50,6 @@ class Solution:
             insr, dele, repl = dfs(i, j + 1), dfs(i + 1, j), dfs(i + 1, j + 1)
             return 1 + min(insr, dele, repl)
         return dfs(0, 0)
-
-
 
 
 # @lc code=end

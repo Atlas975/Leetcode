@@ -15,7 +15,7 @@ class Solution:
         dp = ([0] * n) + [1]
         dp[-2] = int(s[-1] != "0")
 
-        for i in reversed(range(n - 1)):
+        for i in range(n - 2, -1, -1):
             if s[i] == "0":
                 continue
             dp[i] += dp[i + 1]

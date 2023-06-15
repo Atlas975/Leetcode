@@ -6,7 +6,7 @@
 
 # @lc code=start
 
-from itertools import product
+from itertools import product, starmap
 
 
 class Solution:
@@ -14,17 +14,18 @@ class Solution:
         n, m = len(grid), len(grid[0])
 
         def dfs(r, c):
+            if grid[r][c] == 0:
+                return 0
             grid[r][c] = 0
-            return 1 + sum(
-                dfs(dr, dc)
-                for dr, dc in ((r + 1, c), (r - 1, c), (r, c + 1), (r, c - 1))
-                if 0 <= dr < n and 0 <= dc < m and grid[dr][dc]
+            return (
+                1
+                + (dfs(r + 1, c) if r < n - 1 else 0)
+                + (dfs(r - 1, c) if r > 0 else 0)
+                + (dfs(r, c + 1) if c < m - 1 else 0)
+                + (dfs(r, c - 1) if c > 0 else 0)
             )
 
-        return max(
-            (dfs(r, c) for r, c in product(range(n), range(m)) if grid[r][c] == 1),
-            default=0,
-        )
+        return max(starmap(dfs, product(range(n), range(m))))
 
 
 # @lc code=end

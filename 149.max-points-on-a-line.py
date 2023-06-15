@@ -10,21 +10,16 @@ from collections import defaultdict
 
 class Solution:
     def maxPoints(self, points: List[List[int]]) -> int:
-        if len(points) <= 2:
+        if len(points) < 3:
             return len(points)
 
-        slope_calc = lambda p1, p2: (
-            (p1[1] - p2[1]) / (p1[0] - p2[0]) if (p1[0] - p2[0]) != 0 else float("inf")
-        )
-
         res = 1
-        slopes = defaultdict(lambda: 1)
-        for i, p1 in enumerate(points):
-            slopes.clear()
-            for p2 in points[i + 1 :]:
-                slope = slope_calc(p1, p2)
-                slopes[slope] += 1
-                res = max(res, slopes[slope])
+        for i, (x1, y1) in enumerate(points[:-1]): # O(n^2)
+            slopes = {}  # slope: count
+            for x2, y2 in points[i + 1 :]:
+                s = (y2 - y1) / (x2 - x1) if x2 != x1 else "inf"
+                slopes[s] = slopes.get(s, 1) + 1
+            res = max(res, max(slopes.values(), default=0))
         return res
 
 

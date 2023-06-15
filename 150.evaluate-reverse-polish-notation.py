@@ -20,7 +20,7 @@ class Solution:
                 case "*":
                     s.append(s.pop() * s.pop())
                 case "/":
-                    s.append((1 / s.pop()) * s.pop())
+                    s.append(int((1 / s.pop()) * s.pop()))
                 case _:
                     s.append(int(t))
         return s.pop()

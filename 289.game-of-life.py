@@ -24,10 +24,7 @@ class Solution:
         """
         n, m = len(board), len(board[0])
 
-
-
-        @cache
-        def alive_cnt(r, c):
+        def survives(r, c):
             cnt = 0
             lc, rc = c > 0, c < m - 1
             if r > 0:
@@ -36,16 +33,14 @@ class Solution:
             if r < n - 1:
                 hi = board[r + 1]
                 cnt += (hi[c] % 2) + (lc and hi[c - 1] % 2) + (rc and hi[c + 1] % 2)
-            return cnt + (lc and board[r][c - 1] % 2) + (rc and board[r][c + 1] % 2)
+            cnt += (lc and board[r][c - 1] % 2) + (rc and board[r][c + 1] % 2)
+            return cnt in (2, 3) if board[r][c] == 1 else cnt == 3
 
         for r, c in product(range(n), range(m)):
-            cnt = alive_cnt(r, c)
-            if (board[r][c] == 1 and cnt in (2, 3)) or (board[r][c] == 0 and cnt == 3):
-                board[r][c] += 2
-
+            if survives(r, c):
+                board[r][c] |= 2
         for r, c in product(range(n), range(m)):
             board[r][c] >>= 1
 
 
 # @lc code=end
- 

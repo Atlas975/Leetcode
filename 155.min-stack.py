@@ -13,7 +13,8 @@ class MinStack:
         self.s = deque()
 
     def push(self, val: int) -> None:
-        self.s.append((val, min(val, self.getMin()) if self.s else val))
+        stackmin = min(val, self.getMin()) if self.s else val
+        self.s.append((val, stackmin))
 
     def pop(self) -> None:
         self.s.pop()
